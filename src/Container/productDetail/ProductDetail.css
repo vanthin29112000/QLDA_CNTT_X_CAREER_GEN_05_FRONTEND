@@ -1,0 +1,233 @@
+.product-detail__container{
+    width: 100%;
+    height: fit-content;
+    background-color: #f5f5fa;
+    display: flex;
+    justify-content: center;
+    padding-top: 32px;
+}
+
+.product-detail__top,.product-detail__tab{
+    width: 100%;
+    background-color: white;
+    border-radius: 8px;
+
+}
+
+.product-detail__bg{
+    width: 90%;
+    height: fit-content;
+}
+
+.product-detail__left,.product-detail__right{
+    padding: 16px;
+}
+
+.product-detail__left{
+    border-right: 2px solid #f5f5fa;
+}
+
+.product-detail__left-img{
+    width: 100%;
+    object-fit: cover;
+    border: 1px solid rgb(193, 193, 193);
+    border-radius: 100%;
+}
+
+.product-detail__left-img-item{
+    padding: 8px;
+}
+
+.product-detail__left-img-item img{
+    width: 100%;
+    object-fit: cover;
+    border: 1px solid rgb(193, 193, 193);
+    border-radius: 4px;
+    padding: 4px;
+    cursor: pointer;
+}
+
+.product-detail__left-img-item img:hover{
+    border: 2px solid #1890ff;
+}
+
+.product-detail__left-img-item-active {
+    border: 2px solid #1890ff;
+    cursor: none;
+}
+
+.product-detail__left-carousel-button {
+    height: 100%;   
+    margin: 16px 0px;
+    padding-bottom: 24px;
+    color: grey;
+    cursor: pointer;
+    font-weight: 700;
+    z-index: 2;
+}
+
+
+.product-detail__left-carousel-button-bg:hover{
+    background-color: rgba(154, 154, 154, 0.5);    
+
+}
+
+.product-detail__left-carousel-button-left {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+}
+
+
+.product-detail__left-carousel-button-right {
+    position: absolute;
+
+    top: 0;
+    right: 0;
+}
+
+.product-detail__left-carousel-button-bg{
+    height: 100%;
+    width: 36px;
+    background-color: rgba(243, 242, 242, 0.5);    
+    font-size: 1.4em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Right */
+
+.product-detail__right-name-product-timeline p {
+    margin: 0px;
+}
+
+.product-detail__right-name-product{
+    font-size: 2em;
+    font-weight: 300;
+
+}
+
+.product-detail__right-timeline{
+    font-size: 1em;
+    font-weight: 600;
+    color: rgb(120, 120, 120);
+    margin: 0px;
+}
+
+.product-detail__right-price-bg{
+    width: 50%;
+    height: fit-content;
+    margin-top: 8px;
+    padding: 16px;
+    background-color: #FAFAFA;
+
+    /* border-bottom: 1px solid rgb(193, 193, 193); */
+
+}
+
+.product-detail__right-price{
+    font-size: 2em;
+    font-weight: 500;
+    color: rgb(255, 66, 78);
+    margin: 0;
+}
+
+.product-detail__right-amount-bg{
+    margin-top: 32px;
+}
+
+.product-detail__right-amount-title{
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.product-detail__right-amount{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    
+}
+
+.product-detail__right-amount-button{
+    width: 32px;
+    height: 32px;
+    background-color: white;
+    border: 1px solid rgb(236, 236, 236);
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.product-detail__right-amount-button:hover{
+    background-color: rgb(236, 236, 236);
+    border: 1px solid rgb(236, 236, 236);
+
+}
+
+.product-detail__right-qty{
+    color: #757575;
+    margin: 0;
+    margin: 0px 16px;
+    font-size: 1em;
+    font-weight: 400;
+}
+
+.product-detail__right-button{
+    width: 50%;
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+}
+
+.product-detail__right-content-bg{
+    margin-top: 16px;
+    border-top: 1px solid rgb(236, 236, 236);
+    border-bottom: 1px solid rgb(236, 236, 236);
+    padding: 8px;
+    color: #a9a9a9;
+
+}
+
+.product-detail__right-brand{
+    margin-bottom: 0px;
+    display: flex;
+}
+
+.product-detail__right-brand-item{
+    color: #1890ff;
+    margin: 0 8px;
+}
+
+.product-detail__right-amount-bg{
+    width: 100%;
+}
+
+.product-detail__tab{
+    margin-top: 16px;
+    padding: 16px;
+}
+
+/* Small device */
+@media screen and (max-width : 576px) {
+    
+}
+
+/* Medium device (Tablet) */
+@media screen and (max-width : 768px) {
+    .product-detail__right-price-bg{
+        width: 100%;
+    }
+}
+
+/* Large device (Desktops) */
+@media screen and (max-width: 992px) {
+    
+ }
+
+
+ /* Extra large device (large desktops) */
+@media screen and (min-width : 1140px) {
+    
+}

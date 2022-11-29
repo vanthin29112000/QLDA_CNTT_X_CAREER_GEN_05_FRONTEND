@@ -1,0 +1,117 @@
+.auth-container{
+    width: 100vw;
+    height: 100vh;
+    background-color: #eef6ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-bg{
+    height: 80%;
+    background-color: white;
+    border-radius: 8px;
+}
+
+.auth-bg__item{
+    height: 100%;
+    color: black;
+}
+
+.auth-bg__item-left{
+    display: flex;
+    align-items: center;
+}
+
+.auth-bg__item-left img{
+    width: 100%;
+    object-fit:scale-down;
+    
+}
+
+.auth-bg__item-right{
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+   
+}
+
+.auth__login-container,.auth__register-container{
+    width: 80%;
+    height: 80%;
+    /* text-align: center; */
+}
+
+.auth__register-container{
+    width: 80%;
+    height: 90%;
+    /* text-align: center; */
+}
+
+.auth__login-top{
+    height: 95%;
+}
+
+.auth__login-bottom{
+    height: 5%;
+}
+
+.auth__login-title p,.auth__register-title p{
+    font-family: 'Anton', sans-serif;
+    font-size: 2em;
+    text-align: center;
+}
+
+.auth__register-title p{
+    margin-bottom: 4px;
+}
+
+.auth__login-input{
+
+}
+
+.auth__login-rememberMe-forgetPass{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content:space-between;
+    margin: 8px 0px;
+}
+
+.auth__login-noAccount{
+    display: flex;
+    justify-content: center;
+}
+
+.auth__login-noAccount a {
+    font-style: italic;
+    margin: 0px 4px;
+}
+
+/* Small device */
+@media screen and (max-width : 576px) {
+    .auth-bg{
+        height: 100%;
+        background-color: white;
+    }
+
+    .auth-bg__item-left{
+        display: none;
+    }
+}
+
+/* Medium device (Tablet) */
+@media screen and (min-width : 768px) {
+    
+}
+
+/* Large device (Desktops) */
+@media screen and (min-width: 992px) {
+
+ }
+
+
+ /* Extra large device (large desktops) */
+@media screen and (min-width : 1140px) {
+    
+}

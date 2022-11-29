@@ -1,0 +1,228 @@
+.pagination-container{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: aqua; */
+    padding-top: 32px;
+}
+
+.pagination__filter-container,
+.pagination__products-container{
+    width: 100%;
+    height: 100vh;
+}
+
+
+.pagination__products-bg{
+    padding: 16px;
+}
+
+.pagination__products-sort-filter{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+
+}
+
+.filter-open{
+    cursor: pointer;
+}
+
+.pagination__sort{
+    height: 48px;
+    display: flex;
+    justify-content:flex-end;
+    align-items: center;
+    
+}
+
+.pagination__sort p{
+    font-size: 1.1em;
+    font-weight: 600;
+    margin: 8px;
+}
+
+.pagination__product-item{
+    width: 100%;
+}
+
+.pagination__product-item-bg{
+    width: 100%;
+    height: fit-content;
+    border-radius: 8px;
+    box-shadow: -2px 6px 16px 4px #e0e0e0;
+    margin-top: 32px;
+    padding: 16px;
+    background-color: white;
+}
+
+.pagination__product-item-bg:hover{
+    transform: scale(1.01);
+}
+
+.pagination__product-item-bg:active{
+    transform: scale(1.01);
+}
+
+.pagination__product-item-top{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 8px;
+    cursor: pointer;
+
+}
+
+.pagination__list-product{
+    padding-bottom: 32px;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #f5f5fA;
+}
+
+.product-item__title-timer{
+    width: 100%;
+}
+
+.product-item__title-timer p{
+    margin-bottom: 4px;
+    padding: 0;
+}
+
+.product-item__image{
+    width: 48px;
+    height: 48px;
+    border-radius: 108px;
+    object-fit: fill;
+    margin-right: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.product-item__title{
+    width: calc(100% - 48px);
+    height: fit-content;
+    font-size: 1.2em;
+    font-weight: 700;
+    overflow: hidden;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    -webkit-line-clamp: 2;
+    text-overflow: clip;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+
+.product-item__timer{
+    width: 100%;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #b8b3b3;
+}
+
+.product-item__title:hover {
+    overflow: visible;
+}
+
+.product-content{
+    width: 100%;
+    height: 130px;
+}
+
+.product-content p{
+    margin-bottom: 4px;
+}
+
+.product-content__item{
+    display: flex;
+}
+
+.product-content__item-title{
+    font-weight: 500;
+    margin-right: 4px;
+}
+
+.product-cart-price{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.product__price{
+    width: 100%;
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-bottom: 0px;
+}
+
+.product__price-amount-process{
+    /* background-image: linear-gradient(#ee4d2d,#ff7337); */
+    background-color: rgb(255, 66, 78);
+}
+
+.product__price-amount-container{
+    position: relative;
+    background-color: rgb(255, 170, 175);
+}
+
+.product__price-amount-bg{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+}
+
+.product__price-amount{
+    width: 100%;
+    height: 16px;
+    font-size: 0.8em;
+    margin-bottom: 0px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    /* color: #b3b3b3; */
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.product-cart__sold-out{
+    font-size: 1.2em;
+    color: red;
+    font-weight: 500;
+    margin-bottom: 0px;
+}
+
+.pagination__page{
+    padding: 16px 0px;
+    text-align: center;
+}
+
+/* Small device */
+@media screen and (max-width : 576px) {
+    /* .pagination__sort{
+        flex-direction: column;
+    } */
+}
+
+/* Medium device (Tablet) */
+@media screen and (min-width : 768px) {
+    
+}
+
+/* Large device (Desktops) */
+@media screen and (max-width: 992px) {
+    .pagination__filter-container{
+        display: none;
+    }
+ }
+
+
+ /* Extra large device (large desktops) */
+@media screen and (min-width : 1140px) {
+    
+}
