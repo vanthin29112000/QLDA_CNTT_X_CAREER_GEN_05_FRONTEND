@@ -5,7 +5,7 @@ export const getAllProducts = createAsyncThunk(
    "products/getAllProduct",
    async () => {
       try {
-         const res = await callAPI("/vouchers", "GET", {});
+         const res = await callAPI("/product", "GET", {});
 
          return res.data;
       } catch (error) {
@@ -18,7 +18,7 @@ export const getProductByID = createAsyncThunk(
    "products/getProductByID",
    async (id) => {
       try {
-         const res = await callAPI(`/vouchers/${id}`, "GET", {});
+         const res = await callAPI(`/product/${id}`, "GET", {});
          return res.data;
       } catch (error) {
          return error.response.data;

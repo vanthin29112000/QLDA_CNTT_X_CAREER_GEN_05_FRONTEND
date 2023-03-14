@@ -13,6 +13,7 @@ export const productRemainingSelector = createSelector(
 
    (listProduct, filters, sortProduct) => {
       // console.log(sortProduct);
+      if (listProduct.length === 0) return [];
       let tempProducts = [...listProduct];
 
       switch (sortProduct) {

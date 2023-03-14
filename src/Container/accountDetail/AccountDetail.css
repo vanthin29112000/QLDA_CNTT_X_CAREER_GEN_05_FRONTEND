@@ -1,0 +1,56 @@
+.account-detail__container{
+    width: 100%;
+    height: 100%;
+    /* height: fit-content; */
+    background-color: #f5f6fb;
+    padding: 16px 0px;
+}
+
+.account-detail__bg{
+    width: 100%;
+    height: fit-content;
+    background-color: white;
+    border-radius: 8px;
+    padding: 32px 0px;
+}
+
+.ad__user-info{
+    width: 100%;
+    height: fit-content;
+    padding: 0px 32px;
+    margin-bottom: 16px;
+}
+
+.add__user-info-detail{
+    width: 100%;
+    padding: 0px 32px;
+    margin-top: 32px;
+}
+
+.ad__user-info-item{
+    display: flex;
+    justify-content: space-between;
+    border-bottom:1px solid rgba(0,0,0,.12) ;
+    padding: 16px 0px;
+    flex-grow: 1;
+}
+
+.ad__user-detail-item{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.ad__user-detail-title p{
+    margin: 0;
+}
+
+.add__change-password{
+    width: 100%;
+    height: fit-content;
+    margin: 0 auto;
+    border: 1px dashed rgba(0,0,0,.12);
+    padding: 16px 32px;
+    border-radius: 16px;
+    margin-top: 16px;
+}

@@ -1,0 +1,85 @@
+.admin-container{
+    width: 100vw;
+    display: flex;
+
+}
+
+.admin__menu-container{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.admin__content{
+    width: 100%;
+    height: 100vh;
+    background-color: #e5e9eb;
+    padding: 16px 0px;
+}
+
+.admin-title{
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.admin-item__content{
+    width: 100%;
+    height: fit-content;
+    padding-bottom: 8px;
+    background-color: white;
+    border-radius: 8px;
+}
+
+.admin-item__filter{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 32px ;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.ai__filter-item{
+    display: flex;
+    
+}
+
+.drawer__title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 16px;
+}
+
+.drawer__btn-close{
+    cursor: pointer;
+}
+
+.drawer__btn-close:hover {
+    color: black;
+}
+
+.drawer__btn-close:active{
+    transform: scale(0.9);
+}
+
+.drawer__show-img-upload {
+    width: 100%;
+    height: 20%;
+    object-fit: cover;
+}
+
+.drawer__content-item .ant-upload-list-picture-card-container{
+    width: 100%;
+    height: fit-content;
+}
+
+.drawer__content-item-title{
+    color : #9b9b9b;
+    font-size: 1em;
+    font-weight: 600;
+    margin: 8px 0px;
+    
+}
+

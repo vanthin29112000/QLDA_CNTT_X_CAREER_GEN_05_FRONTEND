@@ -1,0 +1,33 @@
+.visa-container{
+    width: 100%;
+    height: 100%;
+}
+
+.visa-title{
+    width: 100%;
+    text-align: center;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.visa-content{
+    width: 100%;
+    height: 100%;
+}
+
+.visa-item{
+    width: 100%;
+    height: 100%;
+    margin-bottom: 8px;
+}
+
+.visa-item p{
+    margin-bottom: 4px;
+}
+
+.visa-item-flex{
+    display: grid;
+    grid-template-columns: 45% 45%;
+    grid-gap: 10%;
+}

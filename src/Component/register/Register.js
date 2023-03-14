@@ -17,7 +17,7 @@ import { register } from "../../reduxToolkit/thunk/userThunk";
 import { AuthWithFirebase } from "../authWithFirebase/AuthWithFirebase";
 export const Register = () => {
    const dispatch = useDispatch();
-   // const isAuth = useSelector(isLogin);
+   const isAuth = useSelector(isLogin);
    const navigate = useNavigate();
    const [isShowSuccess, setIsShowSuccess] = useState(false);
    const notify = useSelector(notification);
@@ -29,11 +29,11 @@ export const Register = () => {
       }
    }, [notify]);
 
-   // useEffect(() => {
-   //    if (isAuth) {
-   //       naviagte("/");
-   //    }
-   // }, [isAuth]);
+   useEffect(() => {
+      if (isAuth) {
+         navigate("/");
+      }
+   }, [isAuth]);
 
    const onRegister = (value) => {
       // console.log(value);
@@ -151,7 +151,7 @@ export const Register = () => {
                                     }
                                     return Promise.reject(
                                        new Error(
-                                          "Mật khẩu hơn 8 ký tự, 1 chữ in hoa, 1 chữ số, 1 ký tự đặc biệt !"
+                                          "Mật khẩu phải hơn 8 ký tự (Bao gồm chữ in hoa, chữ số, ký tự đặc biệt)"
                                        )
                                     );
                                  },
@@ -213,7 +213,7 @@ export const Register = () => {
                                  marginBottom: "0px",
                               }}
                            >
-                              Đăng nhập
+                              Đăng kí{" "}
                            </Button>
                         </Form.Item>
                      </div>

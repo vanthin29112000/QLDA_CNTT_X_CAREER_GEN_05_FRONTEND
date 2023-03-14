@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { isError } from "../../service/callApi";
 import { getAllProducts, getProductByID } from "../thunk/productThunk";
 
 const initialState = {
@@ -10,6 +11,11 @@ const initialState = {
       message: "",
    },
    products: [],
+   page: {
+      totalPage: 0,
+      currentPage: 1,
+      pageSize: 0,
+   },
    filter: {
       category: [],
       brand: [],
@@ -25,8 +31,9 @@ const productsSlice = createSlice({
    initialState,
    reducers: {
       handleEndNotification: (state) => {
-         state.error = {
-            isShowError: false,
+         state.notification = {
+            type: "",
+            isShow: false,
             message: "",
          };
       },
@@ -55,8 +62,14 @@ const productsSlice = createSlice({
          .addCase(getAllProducts.fulfilled, (state, action) => {
             state.isLoading = false;
             state.status = "idle";
-            if (!action.payload.error) {
-               state.products = [...action.payload];
+            if (!isError(action.payload)) {
+               const data = action.payload.data;
+               state.products = [...action.payload.data];
+               state.page = {
+                  totalPage: (data.totalProduct / data.pageSize).toFixed(),
+                  currentPage: data.currentPage,
+                  pageSize: data.pageSize,
+               };
             } else {
                state.notification.isShow = true;
                state.notification.message = action.payload.message;
@@ -71,8 +84,10 @@ const productsSlice = createSlice({
          .addCase(getProductByID.fulfilled, (state, action) => {
             state.isLoading = false;
             state.status = "idle";
-            if (!action.payload.error) {
-               state.productDetail = [action.payload];
+            console.log(action.payload);
+            if (!isError(action.payload)) {
+               state.productDetail = [action.payload.data];
+               console.log("true");
             } else {
                state.notification.isShow = true;
                state.notification.message = action.payload.message;

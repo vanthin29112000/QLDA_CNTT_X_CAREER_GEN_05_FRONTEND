@@ -20,8 +20,8 @@ export const callAPI = (url, method = "GET", body, token = "") => {
 };
 
 export const isError = (data) => {
-   console.log("data", data);
-   if (data.statusCode) {
+   // console.log("data", data);
+   if ((data.statusCode !== 200 && data.statusCode) || data.status !== 200) {
       // console.log("return true");
       return true;
    } else {

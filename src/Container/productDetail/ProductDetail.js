@@ -7,50 +7,55 @@ import { Button, Carousel, InputNumber, Tabs } from "antd";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { HandleAmount } from "../../Layout/handleAmount/HandleAmount";
 import { productDetail } from "../../reduxToolkit/selector/productsSelector";
 import { getProductByID } from "../../reduxToolkit/thunk/productThunk";
 import { formatDate, formatVND } from "../../service/formater";
 import "./ProductDetail.css";
 export const ProductDetail = () => {
-   const [qtyProduct, setQtyProduct] = useState(1);
-   const [imgActive, setImgActive] = useState(0);
-   const [tempImg, setTempImg] = useState([]);
    const params = useParams();
    const dispatch = useDispatch();
    const productInfo = useSelector(productDetail);
 
+   const [qtyProduct, setQtyProduct] = useState(1);
+   const [imgActive, setImgActive] = useState(0);
+   const [tempImg, setTempImg] = useState([]);
+   const [startImg, setStartImg] = useState(0);
+   const [imgShow, setImgShow] = useState([]);
    useEffect(() => {
       const id = params.id;
-      console.log("id", id);
       dispatch(getProductByID(id));
-
-      if (productInfo.length > 0) {
-         setTempImg([
-            productInfo[0].brand.img,
-            // productInfo[0].image.main,
-            // productInfo[0].image.more,
-         ]);
-      }
    }, []);
 
-   const handleQtyProduct = (key) => {
-      switch (key) {
-         case 0: {
-            if (qtyProduct > 1) {
-               setQtyProduct(qtyProduct - 1);
-            }
-            break;
-         }
+   useEffect(() => {
+      if (productInfo.length > 0) {
+         setTempImg([productInfo[0].brand.img, ...productInfo[0].image]);
+         console.log("image", tempImg);
+      }
+   }, [productInfo]);
 
-         case 1: {
-            if (qtyProduct < productInfo[0].countInStock) {
-               setQtyProduct(qtyProduct + 1);
-            }
-            break;
+   useEffect(() => {
+      if (startImg + 4 <= tempImg.length && tempImg.length > 0) {
+         let temp = [];
+         for (let i = startImg; i < startImg + 4; i++) {
+            temp.push(tempImg[i]);
          }
+         console.log("temp", temp);
+         setImgShow(temp);
+      }
+   }, [tempImg, startImg]);
 
-         default: {
-            break;
+   const handleSlideShow = (key) => {
+      if (key === "up") {
+         if (startImg + 5 <= tempImg.length) {
+            setStartImg(startImg + 1);
+            console.log("handle");
+         }
+      }
+
+      if (key === "down") {
+         if (startImg - 1 >= 0) {
+            setStartImg(startImg - 1);
          }
       }
    };
@@ -65,51 +70,69 @@ export const ProductDetail = () => {
                         class="col-12 col-md-5 col-lg-5 col-xl-4 product-detail__left"
                         style={{ padding: "16px" }}
                      >
-                        <img
-                           src={productInfo[0].brand.img}
-                           class="product-detail__left-img"
-                           alt="logo.png"
-                        ></img>
+                        <div class="product-detail__left-img-contain">
+                           <div class="product-detail__left-img-content">
+                              <img
+                                 src={tempImg[imgActive]}
+                                 class="product-detail__left-img"
+                                 alt="logo.png"
+                              ></img>
+                           </div>
+                        </div>
 
                         <div
                            class="product-detail__left-carousel"
                            style={{ position: "relative" }}
                         >
                            <div class="product-detail__left-carousel-button product-detail__left-carousel-button-left">
-                              <div class="product-detail__left-carousel-button-bg ">
+                              <div
+                                 class="product-detail__left-carousel-button-bg "
+                                 onClick={() => {
+                                    handleSlideShow("down");
+                                 }}
+                              >
                                  <LeftOutlined />
                               </div>
                            </div>
                            <div class="product-detail__left-carousel-button product-detail__left-carousel-button-right">
-                              <div class="product-detail__left-carousel-button-bg ">
+                              <div
+                                 class="product-detail__left-carousel-button-bg "
+                                 onClick={() => {
+                                    handleSlideShow("up");
+                                 }}
+                              >
                                  <RightOutlined />
                               </div>
                            </div>
-                           <div class="row g-2">
-                              {tempImg.length > 0 &&
-                                 tempImg.map((ele, index) =>
+                           <div class="product-detail__left-carousel-list-img">
+                              {imgShow.length > 0 &&
+                                 imgShow.map((ele, index) =>
                                     index === imgActive ? (
                                        <div
-                                          class="col-3 col-md-3 col-lg-3 col-xl-3 product-detail__left-img-item "
+                                          class="product-detail__left-img-item"
                                           key={index}
                                        >
-                                          <img
-                                             src={ele}
-                                             alt=".png"
-                                             style={{
-                                                border: "2px solid #1890ff",
-                                             }}
-                                          ></img>
+                                          <div class="product-detail__left-img-item-content">
+                                             <img
+                                                src={ele}
+                                                alt=".png"
+                                                // style={{
+                                                //    border: "2px solid #1890ff",
+                                                // }}
+                                             ></img>
+                                          </div>
                                        </div>
                                     ) : (
                                        <div
-                                          class="col-3 col-md-3 col-lg-3 col-xl-3 product-detail__left-img-item "
-                                          key={ele.id}
+                                          class="product-detail__left-img-item"
+                                          key={index}
                                           onClick={() => {
                                              setImgActive(index);
                                           }}
                                        >
-                                          <img src={ele.img} alt=".png"></img>
+                                          <div class="product-detail__left-img-item-content">
+                                             <img src={ele} alt=".png"></img>
+                                          </div>
                                        </div>
                                     )
                                  )}
@@ -153,37 +176,11 @@ export const ProductDetail = () => {
                               Số lượng
                            </p>
                            <div class="product-detail__right-amount">
-                              <button
-                                 class="product-detail__right-amount-button"
-                                 onClick={() => {
-                                    handleQtyProduct(0);
-                                 }}
-                              >
-                                 {" "}
-                                 -{" "}
-                              </button>
-                              <InputNumber
-                                 controls={false}
+                              <HandleAmount
                                  max={productInfo[0].countInStock}
                                  value={qtyProduct}
-                                 style={{
-                                    height: "32px",
-                                    width: "50px",
-                                    borderLeft: "none",
-                                    borderRight: "none",
-                                    textAlignLast: "center",
-                                    fontSize: "1.2em",
-                                 }}
-                              />
-                              <button
-                                 class="product-detail__right-amount-button"
-                                 onClick={() => {
-                                    handleQtyProduct(1);
-                                 }}
-                              >
-                                 {" "}
-                                 +{" "}
-                              </button>
+                                 setValue={setQtyProduct}
+                              ></HandleAmount>
 
                               <p class="product-detail__right-qty">
                                  ( Còn {productInfo[0].countInStock} voucher )

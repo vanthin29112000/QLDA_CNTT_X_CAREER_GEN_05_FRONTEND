@@ -21,6 +21,10 @@ import { Login } from "./Component/Login/Login";
 import { Register } from "./Component/register/Register";
 import { Product } from "./Container/product/Product";
 import { ForgotPassword } from "./Component/forgotPassword/ForgotPassword";
+import { ShoppingCart } from "./Container/shoppingCart/ShoppingCart";
+import { AccountDetail } from "./Container/accountDetail/AccountDetail";
+import { Admin } from "./Container/admin/Admin";
+import { NewsManagement } from "./Component/newsManagement/NewsManagement";
 function App() {
    const isLoading = useSelector(loading);
    const notify = useSelector(notification);
@@ -54,13 +58,26 @@ function App() {
                         <Route index element={<PaginationProduct />} />
                         <Route path=":id" element={<ProductDetail />} />
                      </Route>
+                     <Route path="cart" element={<ShoppingCart />}></Route>
+                     <Route
+                        path="accountDetail"
+                        element={<AccountDetail />}
+                     ></Route>
                   </Route>
+
                   <Route path="auth" element={<Auth />}>
                      <Route path="login" element={<Login />} />
                      <Route path="register" element={<Register />} />
                      <Route
                         path="forgot_password"
                         element={<ForgotPassword />}
+                     />
+                  </Route>
+
+                  <Route path="admin" element={<Admin />}>
+                     <Route
+                        path="news-management"
+                        element={<NewsManagement />}
                      />
                   </Route>
                </Routes>

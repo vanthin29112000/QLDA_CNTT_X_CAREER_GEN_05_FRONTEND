@@ -1,78 +1,152 @@
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { Upload } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { UploadOutlined } from "@ant-design/icons";
+import { Modal, Spin, Tooltip } from "antd";
+import "./UploadImages.css";
+import { uploadFirebase } from "../../service/upload";
+import { openNotificationWithIcon } from "../notification/Notification";
 
-export const UploadImage = () => {
-   //    const getBase64 = (img, callback) => {
-   //       const reader = new FileReader();
-   //       reader.addEventListener("load", () => callback(reader.result));
-   //       reader.readAsDataURL(img);
-   //    };
-   //    const beforeUpload = (file) => {
-   //       const isJpgOrPng =
-   //          file.type === "image/jpeg" || file.type === "image/png";
-   //       if (!isJpgOrPng) {
-   //          message.error("You can only upload JPG/PNG file!");
-   //       }
-   //       const isLt2M = file.size / 1024 / 1024 < 2;
-   //       if (!isLt2M) {
-   //          message.error("Image must smaller than 2MB!");
-   //       }
-   //       return isJpgOrPng && isLt2M;
-   //    };
-   //    const App = () => {
+export const UploadImage = ({ nameFolder, title, onChange, value }) => {
+   const [previewOpen, setPreviewOpen] = useState(false);
+   const [previewTitle, setPreviewTitle] = useState(title);
+
+   const [urlImg, setUrlImg] = useState(value);
    const [loading, setLoading] = useState(false);
-   const [imageUrl, setImageUrl] = useState();
-   const handleChange = (info) => {
-      //   if (info.file.status === "uploading") {
-      //      setLoading(true);
-      //      return;
-      //   }
-      //   if (info.file.status === "done") {
-      //      // Get this url from response in real world.
-      //      getBase64(info.file.originFileObj, (url) => {
-      //         setLoading(false);
-      //         setImageUrl(url);
-      //      });
-      //   }
+
+   useEffect(() => {
+      if (value === "") {
+         onChange("");
+      }
+      console.log("url", value);
+   }, []);
+
+   const onChangeImg = async (e) => {
+      const files = e.target.files;
+      try {
+         setLoading(true);
+         const link = await uploadFirebase(files[0], nameFolder);
+         onChange(link);
+      } catch (error) {
+         openNotificationWithIcon("error", error.message);
+      }
+      setLoading(false);
    };
-   const uploadButton = (
-      <div>
-         {loading ? <LoadingOutlined /> : <PlusOutlined />}
-         <div
-            style={{
-               marginTop: 8,
-            }}
-         >
-            Upload
-         </div>
-      </div>
-   );
+
+   // useEffect(() => {
+   //    onChange(urlImg);
+   // }, [urlImg]);
+   //
+   const handleCancel = () => {
+      setPreviewOpen(false);
+   };
+
+   const openPreview = () => {
+      setPreviewOpen(true);
+   };
 
    return (
       <>
-         <Upload
-            name="avatar"
-            listType="picture-card"
-            class="avatar-uploader"
-            showUploadList={false}
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-            // beforeUpload={beforeUpload}
-            onChange={handleChange}
+         <Spin
+            tip="Loading..."
+            spinning={loading}
+            style={{ fontSize: "1.2em" }}
          >
-            {imageUrl ? (
+            <div
+               class="upload-img"
+               style={{
+                  width: "100%",
+                  height: "200px",
+                  borderRadius: "8px",
+               }}
+            >
+               {value !== "" ? (
+                  <div class="upload-success">
+                     <img
+                        src={value}
+                        alt=".png"
+                        style={{ borderRadius: "8px" }}
+                     ></img>
+                     <div class="btn-handle-img">
+                        <div class="btn-handle__button">
+                           {/* <Tooltip placement="bottom" title={"Xem hình ảnh"}>
+                              <button
+                                 style={{
+                                    backgroundColor: "inherit",
+                                    border: "none",
+                                 }}
+                                 onClick={() => setPreviewOpen(true)}
+                              >
+                                 
+                              </button>
+                           </Tooltip> */}
+                           <Tooltip placement="bottom" title={"Xem hình ảnh"}>
+                              <button
+                                 style={{
+                                    backgroundColor: "inherit",
+                                    border: "none",
+                                 }}
+                              >
+                                 <i
+                                    class="fa-regular fa-eye"
+                                    onClick={() => {
+                                       openPreview();
+                                    }}
+                                 ></i>
+                              </button>
+                           </Tooltip>
+                           <Tooltip placement="bottom" title={"Xóa hình ảnh"}>
+                              <button
+                                 style={{
+                                    backgroundColor: "inherit",
+                                    border: "none",
+                                 }}
+                              >
+                                 <i
+                                    class="fa-regular fa-trash-can"
+                                    onClick={() => {
+                                       onChange("");
+                                    }}
+                                 ></i>
+                              </button>
+                           </Tooltip>
+                        </div>
+                     </div>
+                  </div>
+               ) : (
+                  loading !== true && (
+                     <label htmlFor="edit-upload" class="edit_upload">
+                        <div class="none-upload">
+                           <UploadOutlined style={{ fontSize: "1.5em" }} />
+                           <p style={{ margin: "0", marginTop: "8px" }}>
+                              Upload hình ảnh
+                           </p>
+
+                           <input
+                              type="file"
+                              id="edit-upload"
+                              onChange={onChangeImg}
+                              style={{ display: "none" }}
+                              accept=".jpg, .png"
+                           ></input>
+                        </div>
+                     </label>
+                  )
+               )}
+            </div>
+            <Modal
+               open={previewOpen}
+               title={previewTitle}
+               footer={null}
+               onCancel={handleCancel}
+            >
                <img
-                  src={imageUrl}
-                  alt="avatar"
+                  alt="example"
                   style={{
                      width: "100%",
                   }}
+                  src={value}
                />
-            ) : (
-               uploadButton
-            )}
-         </Upload>
+            </Modal>
+         </Spin>
       </>
    );
 };
-// };

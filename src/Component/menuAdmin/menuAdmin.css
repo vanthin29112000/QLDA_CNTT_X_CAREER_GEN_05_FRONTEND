@@ -1,0 +1,52 @@
+.admin__menu div{
+    transition: background 0.3s, width 0.3s cubic-bezier(0.2, 0, 0, 1) 0s;
+
+}
+.button-animation {
+    width: fit-content;
+    height: 64px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+.btn-show-menu {
+    background-color: #1890ff;
+}
+
+.admin__info-account{
+    width: fit-content;
+    height: 64px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    /* border-radius: 50%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid #3c3b3b;
+
+}
+
+.admin__info-account__item{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+
+}
+
+.admin__info-detail{
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.admin__info-detail span {
+    opacity: 1;
+    transition: opacity 0.3s cubic-bezier(0.645, 0.045, 0.355, 1) 0.5s, margin 0.3s 0.5s, color 0.3s 0.5s;
+}
