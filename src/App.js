@@ -25,6 +25,9 @@ import { ShoppingCart } from "./Container/shoppingCart/ShoppingCart";
 import { AccountDetail } from "./Container/accountDetail/AccountDetail";
 import { Admin } from "./Container/admin/Admin";
 import { NewsManagement } from "./Component/newsManagement/NewsManagement";
+import { News } from "./Container/news/News";
+import { NewsContent } from "./Container/newsContent/NewsContent";
+import { NewsRoute } from "./Container/newsRoute/NewsRoute";
 function App() {
    const isLoading = useSelector(loading);
    const notify = useSelector(notification);
@@ -63,6 +66,11 @@ function App() {
                         path="accountDetail"
                         element={<AccountDetail />}
                      ></Route>
+
+                     <Route path="news">
+                        <Route path="" element={<News />} />
+                        <Route path=":id" element={<NewsContent />} />
+                     </Route>
                   </Route>
 
                   <Route path="auth" element={<Auth />}>

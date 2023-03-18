@@ -5,6 +5,7 @@ import {
    deleteNew,
    getAllNews,
    GetNewByID,
+   GetViewNewByID,
    updateNew,
 } from "../thunk/newsThunk";
 
@@ -24,7 +25,7 @@ const initialState = {
       dateSubmit: null,
    },
    sort: "",
-   newsDetail: {},
+   newsDetail: 0,
 };
 
 const newsSlice = createSlice({
@@ -60,7 +61,7 @@ const newsSlice = createSlice({
             state.isLoading = false;
             state.status = "idle";
             if (!isError(action.payload)) {
-               state.listNews = action.payload;
+               state.listNews = action.payload.data;
 
                state.notification.isShow = true;
                state.notification.message = "Thêm bài viết thành công !";
@@ -95,6 +96,22 @@ const newsSlice = createSlice({
             state.status = "idle";
             if (!isError(action.payload)) {
                state.newsEdit = { ...action.payload.data };
+            } else {
+               state.notification.isShow = true;
+               state.notification.message = action.payload.message;
+               state.notification.type = "error";
+            }
+         })
+
+         .addCase(GetViewNewByID.pending, (state, action) => {
+            state.isLoading = true;
+            state.status = "pending";
+         })
+         .addCase(GetViewNewByID.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.status = "idle";
+            if (!isError(action.payload)) {
+               state.newsDetail = { ...action.payload.data };
             } else {
                state.notification.isShow = true;
                state.notification.message = action.payload.message;

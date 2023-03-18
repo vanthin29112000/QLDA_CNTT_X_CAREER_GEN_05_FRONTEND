@@ -13,7 +13,7 @@ export const addNew = createAsyncThunk(
             type,
             content,
          });
-         return res.data;
+         return res;
       } catch (error) {
          return error.response.data;
       }
@@ -38,6 +38,18 @@ export const GetNewByID = createAsyncThunk("news/getNewByID", async (id) => {
       return error.response.data;
    }
 });
+
+export const GetViewNewByID = createAsyncThunk(
+   "news/getViewNewByID",
+   async (id) => {
+      try {
+         const res = await callAPI(`/news/view/${id}`, "GET", {});
+         return res;
+      } catch (error) {
+         return error.response.data;
+      }
+   }
+);
 
 export const updateNew = createAsyncThunk(
    "news/updateNew",

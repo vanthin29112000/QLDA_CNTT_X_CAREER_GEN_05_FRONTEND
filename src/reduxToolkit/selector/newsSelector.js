@@ -7,6 +7,54 @@ export const listFilter = (state) => state.news.filter;
 export const notification = (state) => state.news.notification;
 export const isLoading = (state) => state.news.isLoading;
 export const sortItem = (state) => state.news.sort;
+export const news = (state) => state.news.newsDetail;
+
+export const type = {
+   technology: "Công nghệ",
+   life: "Đời sống",
+   entertainment: "Giải trí",
+   appliances: "Gia dụng",
+   promotion: "Khuyến mãi",
+};
+
+const splitPageSlideShow = (arr) => {
+   let i = 0;
+   let listRender = [];
+   let tempArr = [];
+   for (let index = 0; index <= arr.length; index++) {
+      if (i === 3 || index === arr.length) {
+         listRender.push(tempArr);
+         tempArr = [];
+         i = 0;
+      } else {
+         i++;
+      }
+      tempArr.push(arr[index]);
+   }
+   return listRender;
+};
+
+export const pageNews = createSelector(listNews, (news) => {
+   let temp = [...news];
+   let renderPageNews = [];
+
+   let tempArr = [...temp];
+   tempArr.sort((a, b) => b.views - a.views);
+   renderPageNews.mostViewedNews = tempArr.filter((ele, index) => index < 3);
+
+   renderPageNews.promotionNews = temp.filter(
+      (ele) => ele.type === "promotion"
+   );
+
+   tempArr = temp.filter((ele) => ele.status === "highlights");
+   renderPageNews.highlightsNews = splitPageSlideShow(tempArr);
+
+   tempArr = temp.filter((ele) => ele.status === "new");
+   renderPageNews.latestNews = splitPageSlideShow(tempArr);
+
+   return renderPageNews;
+});
+
 export const newsRemainingSelector = createSelector(
    listNews,
    listFilter,

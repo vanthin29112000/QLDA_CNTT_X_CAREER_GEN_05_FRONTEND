@@ -2,13 +2,9 @@ import React from "react";
 import parse from "html-react-parser";
 import "./NewDetail.css";
 import { formatDate } from "../../service/formater";
+import { type } from "../../reduxToolkit/selector/newsSelector";
 export const NewDetail = ({ newItem }) => {
-   const arrObjType = {
-      technology: "Công nghệ",
-      appliances: "Gia dụng",
-      life: "Đời sống",
-      entertainment: "Giải trí",
-   };
+   const arrObjType = type;
 
    return (
       <div class="new-detail">
@@ -25,7 +21,7 @@ export const NewDetail = ({ newItem }) => {
          <div class="new-detail__title">
             <p>{newItem.title}</p>
          </div>
-         {parse(newItem.content)}
+         <div class="new-detail__content">{parse(newItem.content)}</div>
       </div>
    );
 };

@@ -212,6 +212,10 @@ export const AddNews = ({ onCloseAdd, openAdd, isEdit }) => {
                                  value: "entertainment",
                                  label: "Giải trí",
                               },
+                              {
+                                 value: "promotion",
+                                 label: "Khuyến mãi",
+                              },
                            ]}
                         >
                            {/* <Option value="technology">Công nghệ</Option>

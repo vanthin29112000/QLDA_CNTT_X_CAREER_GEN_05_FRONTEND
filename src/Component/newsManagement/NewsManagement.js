@@ -147,6 +147,10 @@ export const NewsManagement = () => {
                   title = "Giải trí";
                   break;
                }
+               case "promotion": {
+                  title = "Khuyến mãi";
+                  break;
+               }
                default: {
                   break;
                }
@@ -299,6 +303,10 @@ export const NewsManagement = () => {
          {
             value: "appliances",
             label: "Gia dụng",
+         },
+         {
+            value: "promotion",
+            label: "Khuyến mãi",
          },
       ],
       status: [

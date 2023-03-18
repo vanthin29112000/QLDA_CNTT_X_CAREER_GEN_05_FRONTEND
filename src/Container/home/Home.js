@@ -15,6 +15,7 @@ export const Home = () => {
          <a href="/product">Product</a>
          <a href="/cart">ShoppingCart</a>
          <a href="/accountDetail">Thông tin tài khoản</a>
+         <a href="/news">Tin tức</a>
          {isAuth ? (
             <Button
                type="primary"
