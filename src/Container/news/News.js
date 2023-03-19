@@ -247,7 +247,12 @@ export const News = () => {
                            <div class="promotion-infor__news-item">
                               <img src={ele.imgThumbnail} alt=".png"></img>
                               <div style={{ padding: "8px" }}>
-                                 <div class="promotion-infor__news-content">
+                                 <div
+                                    class="promotion-infor__news-content"
+                                    onClick={() => {
+                                       navigate(`${ele._id}`);
+                                    }}
+                                 >
                                     {ele.title}
                                  </div>
                                  <div class="promotion-infor__news-infor">
