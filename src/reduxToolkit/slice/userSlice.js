@@ -18,7 +18,7 @@ const initialState = {
       isShow: false,
       message: "",
    },
-   infoUser: {},
+   infoUser: "",
    resetPass: {
       isSuccess: false,
       isWaiting: true,
@@ -47,7 +47,7 @@ const userSlice = createSlice({
             state.isLoading = false;
             if (!isError(action.payload)) {
                state.isLogin = true;
-               localStorage.setItem("token", action.payload.user.token);
+               localStorage.setItem("token", action.payload.data.user.token);
             } else {
                state.notification.isShow = true;
                state.notification.message = action.payload.message;
@@ -85,7 +85,7 @@ const userSlice = createSlice({
             const token = localStorage.getItem("token");
 
             if (!isError(action.payload) && token) {
-               state.infoUser = { ...action.payload, token };
+               state.infoUser = { ...action.payload.data, token };
                state.isLogin = true;
             } else {
                state.infoUser = {};
@@ -100,10 +100,14 @@ const userSlice = createSlice({
          .addCase(loginWithFirebase.fulfilled, (state, action) => {
             state.status = "idle";
             state.isLoading = false;
-
+            console.log("action", action.payload);
             if (!isError(action.payload)) {
                state.isLogin = true;
-               localStorage.setItem("token", action.payload.token);
+               localStorage.setItem("token", action.payload.data.token);
+               state.infoUser = {
+                  ...action.payload.data,
+                  token: action.payload.data.token,
+               };
             } else {
                state.notification.isShow = true;
                state.notification.message = action.payload.message;

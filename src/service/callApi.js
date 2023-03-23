@@ -21,7 +21,10 @@ export const callAPI = (url, method = "GET", body, token = "") => {
 
 export const isError = (data) => {
    // console.log("data", data);
-   if ((data.statusCode !== 200 && data.statusCode) || data.status !== 200) {
+   if (
+      (data.statusCode !== 200 && data.statusCode) ||
+      (data.status !== 200 && data.status !== 201)
+   ) {
       // console.log("return true");
       return true;
    } else {

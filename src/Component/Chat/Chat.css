@@ -1,0 +1,115 @@
+.chat-box__container{
+    width: 100%;
+    height: 100%;
+    /* padding: 16px; */
+    margin: 0 auto;
+    /* border: 1px solid grey; */
+    /* margin-top: 32px; */
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.chat-box__list-mess{
+    width: 100%;
+    height: 300px;
+    overflow-y: auto;
+}
+
+.chat-box__mess-content{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    border-top: 2px solid #eaf0f4;
+    padding: 16px;
+}
+
+.chat-box__mess-icon{
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    margin: 0px 16px;
+    padding: 4px 0px;
+    padding-right: 8px;
+    background-color: #f0f2f5;
+    border-radius: 16px;
+}
+
+.chat-box__mess-content i {
+    font-size: 1.2em;
+    cursor: pointer;
+    color: #3e93ef;
+}
+
+.chat-box__mess-content i:active{
+    transform: scale(0.9);
+}
+
+.chat-box__mess-item{
+    width: 70%;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+}
+
+.mess-item__avatar{
+    align-self: flex-end;
+}
+
+.mess-item__list-content{
+    display: flex;
+    align-items: center;
+}
+
+.mess-item__content{
+    width: fit-content;
+    height: fit-content;
+    margin: 0px 8px;
+    margin-top: 4px;
+    padding: 8px;
+    background-color: #e4e6eb;
+    border-radius: 16px 16px 16px 4px;
+}
+
+.mess-item__timer{
+    width: fit-content;
+    font-size: 0.8em;
+    font-weight: 600;
+    color: #767676;
+}
+
+.mess-item-receive{
+    float: right;
+    flex-direction: row-reverse;
+}
+
+.mess-item-receive .mess-item__content{
+    border-radius: 16px 16px 4px 16px;
+    background-color: #3e93ef;
+    color: white;
+}
+
+.icon-box{
+    width: 200px;
+    height: 150px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(5,20%);
+}
+
+.icon-box__item{
+    cursor: pointer;
+
+}
+
+.icon-box__item span:hover{
+    width: fit-content;
+    height: fit-content;
+    background-color: #e4e6eb;
+}
+
+.mess-item__content .ant-tooltip-inner{
+    font-size: 0.8em;
+}

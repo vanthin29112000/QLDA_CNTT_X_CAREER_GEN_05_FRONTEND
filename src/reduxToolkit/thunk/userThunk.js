@@ -31,9 +31,9 @@ export const login = createAsyncThunk(
             token: tempUser.user.accessToken,
          });
          // console.log("token", res.data.user.token);
-         return res.data;
+         return res;
       } catch (error) {
-         return error.response.data;
+         return error.response;
       }
    }
 );
@@ -61,9 +61,9 @@ export const register = createAsyncThunk("user/register", async (data) => {
    try {
       let tempData = { ...data, token: tempUser.user.accessToken };
       const res = await callAPI("/auth/register", "POST", tempData);
-      return res.data;
+      return res;
    } catch (error) {
-      return error.response.data;
+      return error.response;
    }
 });
 
@@ -72,9 +72,9 @@ export const getProfileUser = createAsyncThunk(
    async (token) => {
       try {
          const res = await callAPI("auth", "GET", {}, token);
-         return res.data;
+         return res;
       } catch (error) {
-         return error.response.data;
+         return error.response;
       }
    }
 );
@@ -85,9 +85,9 @@ export const loginWithFirebase = createAsyncThunk(
       try {
          const res = await callAPI("auth/login/firebase", "POST", data);
 
-         return res.data;
+         return res;
       } catch (error) {
-         return error.response.data;
+         return error.response;
       }
    }
 );
