@@ -1,8 +1,9 @@
 import axios from "axios";
 
-const baseURLSever = " http://localhost:3000/";
+// const baseURLSever = " http://localhost:3000/";
 
-const baseURL = baseURLSever;
+// const baseURL = baseURLSever;
+const baseURL = process.env.REACT_APP_URL_API;
 
 const axiosConfig = axios.create({
    baseURL: baseURL,
