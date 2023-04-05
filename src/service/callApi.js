@@ -1,9 +1,9 @@
 import axios from "axios";
 
-// const baseURLSever = " http://localhost:3000/";
+const baseURLSever = " http://localhost:3003/";
 
-// const baseURL = baseURLSever;
-const baseURL = process.env.REACT_APP_URL_API;
+const baseURL = baseURLSever;
+// const baseURL = process.env.REACT_APP_URL_API;
 
 const axiosConfig = axios.create({
    baseURL: baseURL,
@@ -14,11 +14,9 @@ export const callAPI = (url, method = "GET", body, token = "") => {
       url: url,
       method: method,
       data: body,
-      withCredentials: false,
+      // withCredentials: false,
       headers: {
          Authorization: "Bearer " + token,
-         "Access-Control-Allow-Origin": "*",
-         "Content-Type": "text/plain",
       },
    });
 };
