@@ -14,8 +14,11 @@ export const callAPI = (url, method = "GET", body, token = "") => {
       url: url,
       method: method,
       data: body,
+      withCredentials: false,
       headers: {
          Authorization: "Bearer " + token,
+         "Access-Control-Allow-Origin": "*",
+         "Content-Type": "text/plain",
       },
    });
 };
