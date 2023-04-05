@@ -4,7 +4,15 @@ import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import { getDatabase } from "firebase/database";
 
-const firebaseConfig = process.env.REACT_APP_FIREBASE_CONFIG;
+const firebaseConfig = {
+   apiKey: process.env.REACT_APP_FB_CONF_APIKEY,
+   authDomain: process.env.REACT_APP_FB_CONF_AUTHDOMAIN,
+   projectId: process.env.REACT_APP_FB_CONF_PROJECTID,
+   storageBucket: process.env.REACT_APP_FB_CONF_STORAGEBUCKET,
+   messagingSenderId: process.env.REACT_APP_FB_CONF_MESSAGINGSENDERID,
+   appId: process.env.REACT_APP_FB_CONF_APPID,
+   measurementId: process.env.REACT_APP_FB_CONF_MEASUREMENTID,
+};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
