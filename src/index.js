@@ -7,7 +7,6 @@ import { Provider } from "react-redux";
 import { store } from "./reduxToolkit/store";
 import "bootstrap/dist/css/bootstrap.css";
 import "antd/dist/antd.css";
-import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

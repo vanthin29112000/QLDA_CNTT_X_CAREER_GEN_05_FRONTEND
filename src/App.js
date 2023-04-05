@@ -28,6 +28,7 @@ import { NewsManagement } from "./Component/newsManagement/NewsManagement";
 import { News } from "./Container/news/News";
 import { NewsContent } from "./Container/newsContent/NewsContent";
 import { NewsRoute } from "./Container/newsRoute/NewsRoute";
+
 function App() {
    const isLoading = useSelector(loading);
    const notify = useSelector(notification);
