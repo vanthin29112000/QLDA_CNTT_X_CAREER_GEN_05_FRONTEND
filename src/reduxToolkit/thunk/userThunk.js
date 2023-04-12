@@ -16,7 +16,7 @@ export const login = createAsyncThunk(
       let tempUser = {};
       try {
          tempUser = await signInWithEmailAndPassword(auth, email, password);
-         console.log(tempUser.user.emailVerified);
+         // console.log(tempUser.user.emailVerified);
       } catch (error) {
          const tempError = {
             message: "Tài khoàn hoặc mật khẩu không đúng ",

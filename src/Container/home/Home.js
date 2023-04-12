@@ -1,27 +1,16 @@
 import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Badge, Button } from "antd";
+import { Avatar, Badge } from "antd";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 import { Chat } from "../../Component/Chat/Chat";
-import {
-   child,
-   get,
-   limitToLast,
-   onValue,
-   push,
-   query,
-   ref,
-   set,
-   update,
-} from "firebase/database";
+import { child, get, onValue, query, ref, update } from "firebase/database";
 import { isLogin, userInfo } from "../../reduxToolkit/selector/userSelector";
 import "./Home.css";
 import { database } from "../../firebase/config";
+import { Navigation } from "../../Component/navigation/Navigation";
 export const Home = () => {
-   const isAuth = useSelector(isLogin);
    const infoUser = useSelector(userInfo);
-
    const db = database;
 
    const [isOpenChat, setIsOpenChat] = useState(false);
@@ -63,6 +52,7 @@ export const Home = () => {
       }
    }, [infoUser]);
 
+   // Chat mess setting
    useEffect(() => {
       if (isSeenChat && !isOpenChat) {
          var snd = new Audio(
@@ -100,28 +90,14 @@ export const Home = () => {
             });
       }
    }, [isOpenChat, infoUser]);
+
    return (
       <div>
-         Home
-         <a href="/auth/login">Login</a>
-         <a href="/auth/register">Register</a>
-         <a href="/product">Product</a>
-         <a href="/cart">ShoppingCart</a>
-         <a href="/accountDetail">Thông tin tài khoản</a>
-         <a href="/news">Tin tức</a>
-         {isAuth ? (
-            <Button
-               type="primary"
-               onClick={() => {
-                  localStorage.clear();
-               }}
-            >
-               Đăng xuất
-            </Button>
-         ) : (
-            ""
-         )}
+         <Navigation></Navigation>
+
+         {/* Render page component */}
          <Outlet />
+         {/* Chat box */}
          <div class="home-chat__container">
             <div
                class="box-chat"

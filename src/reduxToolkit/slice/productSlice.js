@@ -22,7 +22,7 @@ const initialState = {
       applyDate: null,
       price: [0, 0],
    },
-   productDetail: [],
+   productDetail: "",
    sort: "",
 };
 
@@ -84,9 +84,9 @@ const productsSlice = createSlice({
          .addCase(getProductByID.fulfilled, (state, action) => {
             state.isLoading = false;
             state.status = "idle";
-            console.log(action.payload);
+            // console.log(action.payload);
             if (!isError(action.payload)) {
-               state.productDetail = [action.payload.data];
+               state.productDetail = action.payload.data;
                console.log("true");
             } else {
                state.notification.isShow = true;

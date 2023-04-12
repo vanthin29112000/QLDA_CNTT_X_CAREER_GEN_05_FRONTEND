@@ -8,6 +8,7 @@ export const formatDate = (date) => {
    let year = tempDate.getFullYear().toString();
    let month = (tempDate.getMonth() + 101).toString().substring(1);
    let day = (tempDate.getDate() + 100).toString().substring(1);
+   // console.log("timer", day + "/" + month + "/" + year);
    return day + "/" + month + "/" + year;
 };
 

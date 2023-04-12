@@ -53,8 +53,8 @@
     width: 100%;
     height: fit-content;
     border-radius: 8px;
-    box-shadow: -2px 6px 16px 4px #e0e0e0;
-    margin-top: 32px;
+    /* box-shadow: -2px 6px 16px 4px #e0e0e0; */
+    /* margin-top: 32px; */
     padding: 16px;
     background-color: white;
 }
@@ -83,6 +83,10 @@
     padding-bottom: 32px;
     border-bottom: 1px solid #e0e0e0;
     background-color: #f5f5fA;
+}
+
+.pagination__list-product .pagination__product-item {
+    margin-top: 16px;
 }
 
 .product-item__title-timer{

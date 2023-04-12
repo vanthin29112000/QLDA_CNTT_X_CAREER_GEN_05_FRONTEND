@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Avatar.css";
-export const Avatar = () => {
+// import { UserOutlined } from "@ant-design/icons";
+export const Avatar = ({ imgDefault }) => {
    const [urlImg, setUrlImg] = useState(
-      "./images/brand-item/ma-giam-gia-lazada.webp"
+      "./images/depositphotos_364169666-stock-illustration-default-avatar-profile-icon-vector.jpg"
    );
+
+   useEffect(() => {
+      console.log("img", imgDefault);
+      if (imgDefault !== undefined) {
+         setUrlImg(imgDefault);
+      }
+   }, [imgDefault]);
 
    const onChangeImg = (e) => {
       // const reader = new FileReader();
@@ -24,7 +32,7 @@ export const Avatar = () => {
    return (
       <div class="avatar">
          <img src={urlImg} alt=".png" style={{ borderRadius: "100px" }}></img>
-
+         {/* <Avatar size={64} icon={<UserOutlined />} /> */}
          <label htmlFor="edit-avatar">
             <i class="fa-solid fa-pen i-avatar"></i>
          </label>

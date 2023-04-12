@@ -136,7 +136,9 @@ export const PaginationProduct = () => {
                      listProduct.map((item, index) =>
                         index < currentPage * 12 &&
                         index >= (currentPage - 1) * 12 ? (
-                           <Product product={item} key={index}></Product>
+                           <div class="pagination__product-item col-12 col-md-6 col-lg-4 col-xl-3">
+                              <Product product={item} key={index}></Product>
+                           </div>
                         ) : (
                            ""
                         )
