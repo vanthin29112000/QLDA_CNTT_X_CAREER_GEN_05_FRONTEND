@@ -1,0 +1,48 @@
+.logo-official{
+    display: flex;
+    align-items: center;
+    position: relative;
+
+}
+
+.logo-official img {
+    width: 48px;
+    height: 48px;
+    position: absolute;
+    top : 0px;
+    left : -4px;
+    transform: rotate(16deg);
+}
+
+.logo-title{
+    font-family: 'Pacifico', cursive;
+    font-size: 1.5em;
+    font-weight: 500;
+    font-style: italic;
+    margin-left: 32px;
+    /* margin-right: 8px; */
+    background-color:#e70627;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.logo-official .circle {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    position: absolute;
+    top: 6px;
+    left: 36px;
+    border-radius: 108px;
+}
+
+.logo-end{
+    /* font-family: 'Alkatra', cursive; */
+    font-family: 'Pacifico', cursive;
+    font-style: italic;
+    font-size: 1.5em;
+    color: #e70627;
+    
+    border-radius: 4px;
+}

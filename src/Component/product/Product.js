@@ -11,7 +11,7 @@ export const Product = ({ product }) => {
    );
 
    return (
-      <div class="pagination__product-item col-12 col-md-6 col-lg-4 col-xl-3">
+      <>
          <div class="pagination__product-item-bg">
             {/* {console.log(widthProcess)} */}
             <div
@@ -85,6 +85,6 @@ export const Product = ({ product }) => {
                )}
             </div>
          </div>
-      </div>
+      </>
    );
 };

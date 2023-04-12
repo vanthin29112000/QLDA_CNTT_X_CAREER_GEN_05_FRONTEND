@@ -66,7 +66,7 @@ export const AddNews = ({ onCloseAdd, openAdd, isEdit }) => {
             imgThumbnail: newItemEdit.imgThumbnail,
             content: newItemEdit.content,
          });
-         console.log("newItem", newItemEdit);
+         // console.log("newItem", newItemEdit);
          formRef.current?.setFieldsValue({
             title: newItemEdit.title,
             type: newItemEdit.type,

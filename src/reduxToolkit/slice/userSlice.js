@@ -50,7 +50,8 @@ const userSlice = createSlice({
                localStorage.setItem("token", action.payload.data.user.token);
             } else {
                state.notification.isShow = true;
-               state.notification.message = action.payload.message;
+               state.notification.message =
+                  action.payload.data.message || action.payload.message;
                state.notification.type = "error";
             }
          })

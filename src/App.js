@@ -6,6 +6,7 @@ import { Home } from "./Container/home/Home";
 import { useDispatch, useSelector } from "react-redux";
 import {
    error,
+   isLogin,
    loading,
    notification,
 } from "./reduxToolkit/selector/userSelector";
@@ -28,15 +29,19 @@ import { NewsManagement } from "./Component/newsManagement/NewsManagement";
 import { News } from "./Container/news/News";
 import { NewsContent } from "./Container/newsContent/NewsContent";
 import { NewsRoute } from "./Container/newsRoute/NewsRoute";
+import { Homepage } from "./Container/homepage/Homepage";
 
 function App() {
    const isLoading = useSelector(loading);
    const notify = useSelector(notification);
    const dispatch = useDispatch();
+   // const isAuth = useSelector(isLogin);
 
    useEffect(() => {
+      console.log("Home");
       const token = localStorage.getItem("token");
-      if (token !== "") {
+      if (token !== "" && token) {
+         console.log("token", token);
          dispatch(getProfileUser(token));
       }
    }, []);
@@ -58,11 +63,13 @@ function App() {
             <BrowserRouter>
                <Routes>
                   <Route path="/" element={<Home />}>
+                     <Route index element={<Homepage />} />
                      <Route path="product" element={<Product />}>
                         <Route index element={<PaginationProduct />} />
                         <Route path=":id" element={<ProductDetail />} />
                      </Route>
                      <Route path="cart" element={<ShoppingCart />}></Route>
+
                      <Route
                         path="accountDetail"
                         element={<AccountDetail />}
