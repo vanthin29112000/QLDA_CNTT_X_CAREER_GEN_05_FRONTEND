@@ -9,6 +9,7 @@ import { isLogin, userInfo } from "../../reduxToolkit/selector/userSelector";
 import "./Home.css";
 import { database } from "../../firebase/config";
 import { Navigation } from "../../Component/navigation/Navigation";
+import { Footer } from "../../Component/footer/Footer";
 export const Home = () => {
    const infoUser = useSelector(userInfo);
    const db = database;
@@ -98,6 +99,7 @@ export const Home = () => {
          {/* Render page component */}
          <Outlet />
          {/* Chat box */}
+         <Footer></Footer>
          <div class="home-chat__container">
             <div
                class="box-chat"
