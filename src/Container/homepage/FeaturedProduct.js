@@ -92,7 +92,23 @@ export const FeaturedProduct = () => {
                         </div>
                      </div>
                      <div>
-                        <h3 style={contentStyle}>3</h3>
+                        <div class="featured-product__carousel-item">
+                           <div class="featured-product__carousel-product">
+                              {productItem !== "" && (
+                                 <Product product={productItem}></Product>
+                              )}
+                           </div>
+                           <div class="featured-product__carousel-product">
+                              {productItem !== "" && (
+                                 <Product product={productItem}></Product>
+                              )}
+                           </div>
+                           <div class="featured-product__carousel-product">
+                              {productItem !== "" && (
+                                 <Product product={productItem}></Product>
+                              )}
+                           </div>
+                        </div>
                      </div>
                   </Carousel>
                </div>

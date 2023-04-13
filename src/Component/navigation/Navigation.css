@@ -2,7 +2,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 2;
+    z-index: 99;
     width: 100%;
     padding: 8px 0px;
     background-color: hsl(0deg 7.08% 94.25% / 30%);
