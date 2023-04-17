@@ -4,14 +4,30 @@ import { SliderHomePage } from "../../Component/sliderHomePage/SliderHomePage";
 import { FeaturedProduct } from "./FeaturedProduct";
 import { Button, Carousel } from "antd";
 import { RightOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import {
+   getProductSlider,
+   getProductSpecial,
+   getProductSpecialOffer,
+} from "../../reduxToolkit/thunk/productThunk";
+import { productSpecialOfferListFormat } from "../../reduxToolkit/selector/productsSelector";
+import { formatDate } from "../../service/formater";
+import { useNavigate } from "react-router-dom";
+import { getLatestNews } from "../../reduxToolkit/thunk/newsThunk";
+import { latestNewsList } from "../../reduxToolkit/selector/newsSelector";
 export const Homepage = () => {
-   const contentStyle = {
-      height: "228px",
-      color: "#fff",
-      lineHeight: "228px",
-      textAlign: "center",
-      background: "#364d79",
-   };
+   const products = useSelector(productSpecialOfferListFormat);
+   const news = useSelector(latestNewsList);
+
+   const dispatch = useDispatch();
+   const navigate = useNavigate();
+
+   useEffect(() => {
+      dispatch(getProductSlider());
+      dispatch(getProductSpecial());
+      dispatch(getProductSpecialOffer());
+      dispatch(getLatestNews());
+   }, []);
 
    return (
       <div>
@@ -30,57 +46,40 @@ export const Homepage = () => {
                   <h2>Ưu đãi dành cho bạn</h2>
                   {/* <p style={{ color: "grey" }}>Nhanh tay dùng ngay kẻo hết </p> */}
                   <div class="special-offer__product">
-                     <Carousel dotPosition={"bottom"} dot={false}>
-                        <div>
-                           <div class="special-offer__product-list">
-                              <div class="special-offer__product-item">
-                                 <div class="special-offer__brand">
-                                    <img src=".\images\brand-item\ma-giam-gia-shopee.webp"></img>
-                                 </div>
-                                 <div>
-                                    <h6 class="special-offer__product-name">
-                                       Voucher giảm 50% cho đơn hàng 30k
-                                    </h6>
-                                    <p>HSD : 30/04/2023</p>
-                                    <Button type="danger">Xem ngay</Button>
-                                 </div>
-                              </div>
-                              <div class="special-offer__product-item">
-                                 <div class="special-offer__brand">
-                                    <img src=".\images\brand-item\ma-giam-gia-shopee.webp"></img>
-                                 </div>
-                                 <div>
-                                    <h6>Voucher giảm 50% cho đơn hàng 30k</h6>
-                                    <p>HSD : 30/04/2023</p>
-                                    <Button type="danger">Xem ngay</Button>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                        <div>
-                           <div class="special-offer__product-list">
-                              <div class="special-offer__product-item">
-                                 <div class="special-offer__brand">
-                                    <img src=".\images\brand-item\ma-giam-gia-shopee.webp"></img>
-                                 </div>
-                                 <div>
-                                    <h6>Voucher giảm 50% cho đơn hàng 30k</h6>
-                                    <p>HSD : 30/04/2023</p>
-                                    <Button type="danger">Xem ngay</Button>
+                     <Carousel dotPosition={"bottom"} dot={false} autoplay>
+                        {products.length > 0 &&
+                           products.map((productsList) => (
+                              <div>
+                                 <div class="special-offer__product-list">
+                                    {productsList.map((ele) => (
+                                       <div class="special-offer__product-item">
+                                          <div class="special-offer__brand">
+                                             <img src={ele.brand.img}></img>
+                                          </div>
+                                          <div>
+                                             <h6 class="special-offer__product-name">
+                                                {ele.name}
+                                             </h6>
+                                             <p>
+                                                HSD :{" "}
+                                                {formatDate(ele.expirationDate)}
+                                             </p>
+                                             <Button
+                                                type="danger"
+                                                onClick={() => {
+                                                   navigate(
+                                                      `/product/${ele._id}`
+                                                   );
+                                                }}
+                                             >
+                                                Xem ngay
+                                             </Button>
+                                          </div>
+                                       </div>
+                                    ))}
                                  </div>
                               </div>
-                              <div class="special-offer__product-item">
-                                 <div class="special-offer__brand">
-                                    <img src=".\images\brand-item\ma-giam-gia-shopee.webp"></img>
-                                 </div>
-                                 <div>
-                                    <h6>Voucher giảm 50% cho đơn hàng 30k</h6>
-                                    <p>HSD : 30/04/2023</p>
-                                    <Button type="danger">Xem ngay</Button>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
+                           ))}
                      </Carousel>
                   </div>
                </div>
@@ -92,148 +91,33 @@ export const Homepage = () => {
                <h2>Tin tức mới nhất</h2>
 
                <div class="row home-latest-news__container g-2">
-                  <div class=" col-6">
-                     <div class=" home-latest-news__item ">
-                        <div class="home-latest-news__info">
-                           <img
-                              src="https://firebasestorage.googleapis.com/v0/b/x-career-05-project-final.appspot.com/o/imgThumbnail%2Fhjghj.jpg?alt=media&token=23940cde-751b-455b-9d8b-96c434ac5369"
-                              alt=".png"
-                           ></img>
-                           <div class="home-latest-news__info-item">
-                              <div class="home-latest-news__detail">
-                                 <h4>
-                                    Xóa bỏ rào cản ngôn ngữ với mẹo dịch bất kỳ
-                                    ngôn ngữ nào xuất hiện trên 1 tấm hình bằng
-                                    Google Dịch.
-                                 </h4>
-                                 <Button
-                                    type="primary"
-                                    style={{
-                                       display: "flex",
-                                       alignItems: "center",
-                                    }}
-                                 >
-                                    Xem chi tiết <RightOutlined />
-                                 </Button>
+                  {news.length > 0 &&
+                     news.map((ele, index) => (
+                        <div class={index >= 3 ? "col-3" : "col-6"}>
+                           <div class=" home-latest-news__item ">
+                              <div class="home-latest-news__info">
+                                 <img src={ele.imgThumbnail} alt=".png"></img>
+                                 <div class="home-latest-news__info-item">
+                                    <div class="home-latest-news__detail">
+                                       <h4>{ele.title}</h4>
+                                       <Button
+                                          type="primary"
+                                          style={{
+                                             display: "flex",
+                                             alignItems: "center",
+                                          }}
+                                          onClick={() => {
+                                             navigate(`/news/${ele._id}`);
+                                          }}
+                                       >
+                                          Xem chi tiết <RightOutlined />
+                                       </Button>
+                                    </div>
+                                 </div>
                               </div>
                            </div>
                         </div>
-                     </div>
-                  </div>
-
-                  <div class=" col-6">
-                     <div class=" home-latest-news__item ">
-                        <div class="home-latest-news__info">
-                           <img
-                              src="https://firebasestorage.googleapis.com/v0/b/x-career-05-project-final.appspot.com/o/imgThumbnail%2Fhjghj.jpg?alt=media&token=23940cde-751b-455b-9d8b-96c434ac5369"
-                              alt=".png"
-                           ></img>
-                           <div class="home-latest-news__info-item">
-                              <div class="home-latest-news__detail">
-                                 <h4>
-                                    Xóa bỏ rào cản ngôn ngữ với mẹo dịch bất kỳ
-                                    ngôn ngữ nào xuất hiện trên 1 tấm hình bằng
-                                    Google Dịch.
-                                 </h4>
-                                 <Button
-                                    type="primary"
-                                    style={{
-                                       display: "flex",
-                                       alignItems: "center",
-                                    }}
-                                 >
-                                    Xem chi tiết <RightOutlined />
-                                 </Button>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class=" col-6">
-                     <div class=" home-latest-news__item ">
-                        <div class="home-latest-news__info">
-                           <img
-                              src="https://firebasestorage.googleapis.com/v0/b/x-career-05-project-final.appspot.com/o/imgThumbnail%2Fhjghj.jpg?alt=media&token=23940cde-751b-455b-9d8b-96c434ac5369"
-                              alt=".png"
-                           ></img>
-                           <div class="home-latest-news__info-item">
-                              <div class="home-latest-news__detail">
-                                 <h4>
-                                    Xóa bỏ rào cản ngôn ngữ với mẹo dịch bất kỳ
-                                    ngôn ngữ nào xuất hiện trên 1 tấm hình bằng
-                                    Google Dịch.
-                                 </h4>
-                                 <Button
-                                    type="primary"
-                                    style={{
-                                       display: "flex",
-                                       alignItems: "center",
-                                    }}
-                                 >
-                                    Xem chi tiết <RightOutlined />
-                                 </Button>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div class=" col-3">
-                     <div class=" home-latest-news__item ">
-                        <div class="home-latest-news__info">
-                           <img
-                              src="https://firebasestorage.googleapis.com/v0/b/x-career-05-project-final.appspot.com/o/imgThumbnail%2Fhjghj.jpg?alt=media&token=23940cde-751b-455b-9d8b-96c434ac5369"
-                              alt=".png"
-                           ></img>
-                           <div class="home-latest-news__info-item">
-                              <div class="home-latest-news__detail">
-                                 <h4>
-                                    Xóa bỏ rào cản ngôn ngữ với mẹo dịch bất kỳ
-                                    ngôn ngữ nào xuất hiện trên 1 tấm hình bằng
-                                    Google Dịch.
-                                 </h4>
-                                 <Button
-                                    type="primary"
-                                    style={{
-                                       display: "flex",
-                                       alignItems: "center",
-                                    }}
-                                 >
-                                    Xem chi tiết <RightOutlined />
-                                 </Button>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class=" col-3">
-                     <div class=" home-latest-news__item ">
-                        <div class="home-latest-news__info">
-                           <img
-                              src="https://firebasestorage.googleapis.com/v0/b/x-career-05-project-final.appspot.com/o/imgThumbnail%2Fhjghj.jpg?alt=media&token=23940cde-751b-455b-9d8b-96c434ac5369"
-                              alt=".png"
-                           ></img>
-                           <div class="home-latest-news__info-item">
-                              <div class="home-latest-news__detail">
-                                 <h4>
-                                    Xóa bỏ rào cản ngôn ngữ với mẹo dịch bất kỳ
-                                    ngôn ngữ nào xuất hiện trên 1 tấm hình bằng
-                                    Google Dịch.
-                                 </h4>
-                                 <Button
-                                    type="primary"
-                                    style={{
-                                       display: "flex",
-                                       alignItems: "center",
-                                    }}
-                                 >
-                                    Xem chi tiết <RightOutlined />
-                                 </Button>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
+                     ))}
                </div>
             </div>
          </div>

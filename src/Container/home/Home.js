@@ -97,7 +97,10 @@ export const Home = () => {
          <Navigation></Navigation>
 
          {/* Render page component */}
-         <Outlet />
+         <div>
+            <Outlet />
+         </div>
+
          {/* Chat box */}
          <Footer></Footer>
          <div class="home-chat__container">

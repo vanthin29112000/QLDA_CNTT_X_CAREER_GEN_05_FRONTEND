@@ -1,6 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { isError } from "../../service/callApi";
-import { getAllProducts, getProductByID } from "../thunk/productThunk";
+import {
+   getAllProducts,
+   getProductByID,
+   getProductSlider,
+   getProductSpecial,
+   getProductSpecialOffer,
+} from "../thunk/productThunk";
 
 const initialState = {
    isLoading: false,
@@ -24,6 +30,9 @@ const initialState = {
    },
    productDetail: "",
    sort: "",
+   productSlider: [],
+   productSpecial: [],
+   productSpecialOffer: [],
 };
 
 const productsSlice = createSlice({
@@ -87,7 +96,55 @@ const productsSlice = createSlice({
             // console.log(action.payload);
             if (!isError(action.payload)) {
                state.productDetail = action.payload.data;
-               console.log("true");
+            } else {
+               state.notification.isShow = true;
+               state.notification.message = action.payload.message;
+               state.notification.type = "error";
+            }
+         })
+         .addCase(getProductSlider.pending, (state, action) => {
+            state.isLoading = true;
+            state.status = "pending";
+         })
+         .addCase(getProductSlider.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.status = "idle";
+            // console.log(action.payload);
+            if (!isError(action.payload)) {
+               state.productSlider = [...action.payload.data];
+            } else {
+               state.notification.isShow = true;
+               state.notification.message = action.payload.message;
+               state.notification.type = "error";
+            }
+         })
+         .addCase(getProductSpecial.pending, (state, action) => {
+            state.isLoading = true;
+            state.status = "pending";
+         })
+         .addCase(getProductSpecial.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.status = "idle";
+            // console.log(action.payload);
+            if (!isError(action.payload)) {
+               state.productSpecial = [...action.payload.data];
+            } else {
+               state.notification.isShow = true;
+               state.notification.message = action.payload.message;
+               state.notification.type = "error";
+            }
+         })
+         .addCase(getProductSpecialOffer.pending, (state, action) => {
+            state.isLoading = true;
+            state.status = "pending";
+         })
+         .addCase(getProductSpecialOffer.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.status = "idle";
+            // console.log(action.payload);
+            if (!isError(action.payload)) {
+               state.productSpecialOffer = [...action.payload.data];
+               // console.log("true");
             } else {
                state.notification.isShow = true;
                state.notification.message = action.payload.message;

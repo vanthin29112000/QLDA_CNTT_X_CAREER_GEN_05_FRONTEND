@@ -1,10 +1,28 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { formatTimeStamp } from "../../service/formater";
-export const productDetail = (state) => state.products.productDetail;
+import { formatTimeStamp, splitPageSlideShow } from "../../service/formater";
+export const productDetailItem = (state) => state.products.productDetail;
+export const productSliderList = (state) => state.products.productSlider;
+export const productSpecialList = (state) => state.products.productSpecial;
+export const productSpecialOfferList = (state) =>
+   state.products.productSpecialOffer;
 
 export const products = (state) => state.products.products;
 export const listFilter = (state) => state.products.filter;
 export const sortItem = (state) => state.products.sort;
+
+export const productSpecialOfferListFormat = createSelector(
+   productSpecialOfferList,
+   (productSpecials) => {
+      return splitPageSlideShow(productSpecials, 2);
+   }
+);
+
+export const productSpecialListFormat = createSelector(
+   productSpecialList,
+   (productSpecials) => {
+      return splitPageSlideShow(productSpecials, 3);
+   }
+);
 
 export const productRemainingSelector = createSelector(
    products,

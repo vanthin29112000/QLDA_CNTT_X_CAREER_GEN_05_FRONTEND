@@ -112,7 +112,7 @@
     width: 100%;
     height: fit-content;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .featured-product__carousel-product{

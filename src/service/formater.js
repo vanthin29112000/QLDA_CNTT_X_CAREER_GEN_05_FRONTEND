@@ -36,3 +36,24 @@ export const formatDateAndTime = (date) => {
 export const formatTimeStamp = (date) => {
    return Math.round(Date.parse(date) / 1000);
 };
+
+export const splitPageSlideShow = (arr, length) => {
+   let i = -1;
+   let listRender = [];
+   let tempArr = [];
+   for (let index = 0; index <= arr.length; index++) {
+      if (i === length - 1 || index === arr.length) {
+         listRender.push(tempArr);
+         tempArr = [];
+         i = 0;
+
+         console.log("i", i, tempArr);
+      } else {
+         i++;
+      }
+      tempArr.push(arr[index]);
+   }
+
+   console.log("products format", listRender);
+   return listRender;
+};
