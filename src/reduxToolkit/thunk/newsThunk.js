@@ -30,6 +30,19 @@ export const getAllNews = createAsyncThunk("news/getAllNews", async () => {
    }
 });
 
+export const getLatestNews = createAsyncThunk(
+   "news/getLatestNews",
+   async () => {
+      try {
+         const res = await callAPI("/news/latest", "GET", {});
+
+         return res;
+      } catch (error) {
+         return error.response.data;
+      }
+   }
+);
+
 export const GetNewByID = createAsyncThunk("news/getNewByID", async (id) => {
    try {
       const res = await callAPI(`/news/${id}`, "GET", {});

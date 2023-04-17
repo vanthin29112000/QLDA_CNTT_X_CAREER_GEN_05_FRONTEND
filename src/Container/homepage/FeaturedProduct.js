@@ -1,19 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Carousel } from "antd";
-import {
-   DownOutlined,
-   LeftOutlined,
-   RightOutlined,
-   UpOutlined,
-} from "@ant-design/icons";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Product } from "../../Component/product/Product";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductByID } from "../../reduxToolkit/thunk/productThunk";
-import { productDetail } from "../../reduxToolkit/selector/productsSelector";
+import {
+   productDetailItem,
+   productSpecialListFormat,
+} from "../../reduxToolkit/selector/productsSelector";
 export const FeaturedProduct = () => {
    const dispatch = useDispatch();
-   const productItem = useSelector(productDetail);
+   const productItem = useSelector(productDetailItem);
    const [sliderIndex, setSliderIndex] = useState(0);
+
+   const products = useSelector(productSpecialListFormat);
 
    const refSlider = useRef();
 
@@ -42,17 +42,9 @@ export const FeaturedProduct = () => {
    }, [sliderIndex]);
 
    useEffect(() => {
-      dispatch(getProductByID("6425b85c6fc2dc2afc6db486"));
+      dispatch(getProductByID("643d4571e5eebf0c999eb954"));
       console.log("homepage");
    }, []);
-
-   const contentStyle = {
-      height: "100%",
-      color: "#fff",
-      lineHeight: "160px",
-      textAlign: "center",
-      background: "#364d79",
-   };
 
    const arrayTemp = [0, 1];
 
@@ -72,9 +64,21 @@ export const FeaturedProduct = () => {
                </div>
                <div class="featured-product__carousel">
                   <Carousel dotPosition={"bottom"} dots={false} ref={refSlider}>
-                     <div>
-                        <div class="featured-product__carousel-item">
-                           <div class="featured-product__carousel-product">
+                     {products.length > 0 &&
+                        products.map((productItem) => (
+                           <div>
+                              <div class="featured-product__carousel-item">
+                                 {productItem.map((ele) => (
+                                    <div class="featured-product__carousel-product">
+                                       <Product product={ele}></Product>
+                                    </div>
+                                 ))}
+                              </div>
+                           </div>
+                        ))}
+                     {/* <div>
+                        
+                          
                               {productItem !== "" && (
                                  <Product product={productItem}></Product>
                               )}
@@ -109,7 +113,7 @@ export const FeaturedProduct = () => {
                               )}
                            </div>
                         </div>
-                     </div>
+                     </div> */}
                   </Carousel>
                </div>
                <div

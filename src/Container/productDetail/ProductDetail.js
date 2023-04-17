@@ -8,28 +8,31 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { HandleAmount } from "../../Layout/handleAmount/HandleAmount";
-import { productDetail } from "../../reduxToolkit/selector/productsSelector";
+import { productDetailItem } from "../../reduxToolkit/selector/productsSelector";
 import { getProductByID } from "../../reduxToolkit/thunk/productThunk";
 import { formatDate, formatVND } from "../../service/formater";
 import "./ProductDetail.css";
 export const ProductDetail = () => {
    const params = useParams();
    const dispatch = useDispatch();
-   const productInfo = useSelector(productDetail);
+   const productInfo = useSelector(productDetailItem);
 
    const [qtyProduct, setQtyProduct] = useState(1);
    const [imgActive, setImgActive] = useState(0);
    const [tempImg, setTempImg] = useState([]);
    const [startImg, setStartImg] = useState(0);
    const [imgShow, setImgShow] = useState([]);
+
    useEffect(() => {
       const id = params.id;
       dispatch(getProductByID(id));
    }, []);
 
    useEffect(() => {
-      if (productInfo.length > 0) {
-         setTempImg([productInfo[0].brand.img, ...productInfo[0].image]);
+      console.log("product ", productInfo);
+
+      if (!!productInfo) {
+         setTempImg([productInfo.brand.img, ...productInfo.images]);
          console.log("image", tempImg);
       }
    }, [productInfo]);
@@ -62,7 +65,7 @@ export const ProductDetail = () => {
 
    return (
       <>
-         {productInfo.length > 0 && (
+         {!!productInfo && (
             <div class="product-detail__container">
                <div class="product-detail__bg">
                   <div class="product-detail__top row g-0">
@@ -146,28 +149,28 @@ export const ProductDetail = () => {
                         <p class="product-detail__right-brand">
                            Thương hiệu :
                            <p class="product-detail__right-brand-item">
-                              {productInfo[0].brand.name}
+                              {productInfo.brand.name}
                            </p>
                         </p>
 
                         <div class="product-detail__right-name-product-timeline">
                            <p class="product-detail__right-name-product">
-                              {productInfo[0].name}
+                              {productInfo.name}
                            </p>
                         </div>
 
                         <div class="product-detail__right-price-bg">
                            <p class="product-detail__right-price">
-                              {formatVND(productInfo[0].price)}
+                              {formatVND(productInfo.price)}
                            </p>
                         </div>
 
                         <div class="product-detail__right-content-bg">
-                           <p class="">{productInfo[0].desc}</p>
+                           <p class="">{productInfo.desc}</p>
                            <p class="product-detail__right-timeline">
                               Voucher áp dụng :{" "}
-                              {formatDate(productInfo[0].effectiveDate)} -{" "}
-                              {formatDate(productInfo[0].expirationDate)}
+                              {formatDate(productInfo.effectiveDate)} -{" "}
+                              {formatDate(productInfo.expirationDate)}
                            </p>
                         </div>
 
@@ -177,13 +180,13 @@ export const ProductDetail = () => {
                            </p>
                            <div class="product-detail__right-amount">
                               <HandleAmount
-                                 max={productInfo[0].countInStock}
+                                 max={productInfo.countInStock}
                                  value={qtyProduct}
                                  setValue={setQtyProduct}
                               ></HandleAmount>
 
                               <p class="product-detail__right-qty">
-                                 ( Còn {productInfo[0].countInStock} voucher )
+                                 ( Còn {productInfo.countInStock} voucher )
                               </p>
                            </div>
                         </div>

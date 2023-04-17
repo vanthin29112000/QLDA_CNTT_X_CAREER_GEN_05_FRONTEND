@@ -4,12 +4,7 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { Auth } from "./Container/auth/Auth";
 import { Home } from "./Container/home/Home";
 import { useDispatch, useSelector } from "react-redux";
-import {
-   error,
-   isLogin,
-   loading,
-   notification,
-} from "./reduxToolkit/selector/userSelector";
+import { loading, notification } from "./reduxToolkit/selector/userSelector";
 
 import { Spin } from "antd";
 import { openNotificationWithIcon } from "./Layout/notification/Notification";
@@ -28,7 +23,6 @@ import { Admin } from "./Container/admin/Admin";
 import { NewsManagement } from "./Component/newsManagement/NewsManagement";
 import { News } from "./Container/news/News";
 import { NewsContent } from "./Container/newsContent/NewsContent";
-import { NewsRoute } from "./Container/newsRoute/NewsRoute";
 import { Homepage } from "./Container/homepage/Homepage";
 
 function App() {
@@ -58,7 +52,12 @@ function App() {
          <Spin
             tip="Loading..."
             spinning={isLoading}
-            style={{ fontSize: "1.2em" }}
+            style={{
+               fontSize: "1.2em",
+               position: "fixed",
+               top: "0",
+               left: "0",
+            }}
          >
             <BrowserRouter>
                <Routes>

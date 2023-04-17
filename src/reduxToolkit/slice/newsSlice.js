@@ -4,6 +4,7 @@ import {
    addNew,
    deleteNew,
    getAllNews,
+   getLatestNews,
    GetNewByID,
    GetViewNewByID,
    updateNew,
@@ -26,6 +27,7 @@ const initialState = {
    },
    sort: "",
    newsDetail: 0,
+   latestNews: [],
 };
 
 const newsSlice = createSlice({
@@ -81,6 +83,21 @@ const newsSlice = createSlice({
             state.status = "idle";
             if (!isError(action.payload)) {
                state.listNews = action.payload.data;
+            } else {
+               state.notification.isShow = true;
+               state.notification.message = action.payload.message;
+               state.notification.type = "error";
+            }
+         })
+         .addCase(getLatestNews.pending, (state, action) => {
+            state.isLoading = true;
+            state.status = "pending";
+         })
+         .addCase(getLatestNews.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.status = "idle";
+            if (!isError(action.payload)) {
+               state.latestNews = action.payload.data;
             } else {
                state.notification.isShow = true;
                state.notification.message = action.payload.message;

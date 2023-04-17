@@ -25,3 +25,39 @@ export const getProductByID = createAsyncThunk(
       }
    }
 );
+
+export const getProductSlider = createAsyncThunk(
+   "products/getProductSlider",
+   async () => {
+      try {
+         const res = await callAPI(`/product/slider`, "GET", {});
+         return res;
+      } catch (error) {
+         return error.response.data;
+      }
+   }
+);
+
+export const getProductSpecial = createAsyncThunk(
+   "products/getProductSpecial",
+   async () => {
+      try {
+         const res = await callAPI(`/product/special`, "GET", {});
+         return res;
+      } catch (error) {
+         return error.response.data;
+      }
+   }
+);
+
+export const getProductSpecialOffer = createAsyncThunk(
+   "products/getProductSpecialOffer",
+   async () => {
+      try {
+         const res = await callAPI(`/product/special-offer`, "GET", {});
+         return res;
+      } catch (error) {
+         return error.response.data;
+      }
+   }
+);
