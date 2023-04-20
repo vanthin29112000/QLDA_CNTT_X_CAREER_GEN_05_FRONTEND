@@ -49,6 +49,10 @@ const userSlice = createSlice({
             if (!isError(action.payload)) {
                state.isLogin = true;
                localStorage.setItem("token", action.payload.data.user.token);
+               state.infoUser = {
+                  ...action.payload.data.user,
+                  token: action.payload.data.token,
+               };
             } else {
                // console.log(action.payload.message);
                state.notification = {
@@ -108,10 +112,10 @@ const userSlice = createSlice({
             if (!isError(action.payload)) {
                state.isLogin = true;
                localStorage.setItem("token", action.payload.data.token);
-               // state.infoUser = {
-               //    ...action.payload.data,
-               //    token: action.payload.data.token,
-               // };
+               state.infoUser = {
+                  ...action.payload.data.user,
+                  token: action.payload.data.token,
+               };
             } else {
                state.notification.isShow = true;
                state.notification.message = action.payload.message;
