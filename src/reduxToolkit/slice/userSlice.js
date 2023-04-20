@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 // import { message } from "antd";
 import { isError } from "../../service/callApi";
 import {
+   changePasswordUser,
    getProfileUser,
    login,
    loginWithFirebase,
@@ -49,8 +50,9 @@ const userSlice = createSlice({
             if (!isError(action.payload)) {
                state.isLogin = true;
                localStorage.setItem("token", action.payload.data.user.token);
+               console.log("user", action.payload.data);
                state.infoUser = {
-                  ...action.payload.data.user,
+                  ...action.payload.data.user.user,
                   token: action.payload.data.token,
                };
             } else {
@@ -161,6 +163,27 @@ const userSlice = createSlice({
             } else {
                state.notification.isShow = true;
                state.notification.message = action.payload.data.message;
+               state.notification.type = "error";
+            }
+         })
+         .addCase(changePasswordUser.pending, (state, action) => {
+            state.status = "pending";
+            state.isLoading = true;
+         })
+         .addCase(changePasswordUser.fulfilled, (state, action) => {
+            state.status = "idle";
+            state.isLoading = false;
+            // const token = localStorage.getItem("token");
+
+            if (!isError(action.payload)) {
+               // state.infoUser = { ...action.payload.data, token };
+               state.notification.message = "Chỉnh sửa thành công";
+               state.notification.type = "success";
+               state.notification.isShow = true;
+               // state.isLogin = true;
+            } else {
+               state.notification.isShow = true;
+               state.notification.message = action.payload.message;
                state.notification.type = "error";
             }
          });

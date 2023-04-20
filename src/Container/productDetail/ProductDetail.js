@@ -20,8 +20,6 @@ export const ProductDetail = () => {
    const [qtyProduct, setQtyProduct] = useState(1);
    const [imgActive, setImgActive] = useState(0);
    const [tempImg, setTempImg] = useState([]);
-   const [startImg, setStartImg] = useState(0);
-   const [imgShow, setImgShow] = useState([]);
 
    useEffect(() => {
       const id = params.id;
@@ -31,37 +29,26 @@ export const ProductDetail = () => {
    useEffect(() => {
       console.log("product ", productInfo);
 
-      if (!!productInfo) {
+      if (productInfo) {
          setTempImg([productInfo.brand.img, ...productInfo.images]);
          console.log("image", tempImg);
       }
    }, [productInfo]);
 
-   useEffect(() => {
-      if (startImg + 4 <= tempImg.length && tempImg.length > 0) {
-         let temp = [];
-         for (let i = startImg; i < startImg + 4; i++) {
-            temp.push(tempImg[i]);
-         }
-         console.log("temp", temp);
-         setImgShow(temp);
-      }
-   }, [tempImg, startImg]);
+   // const handleSlideShow = (key) => {
+   //    if (key === "up") {
+   //       if (startImg + 5 <= tempImg.length) {
+   //          setStartImg(startImg + 1);
+   //          console.log("handle");
+   //       }
+   //    }
 
-   const handleSlideShow = (key) => {
-      if (key === "up") {
-         if (startImg + 5 <= tempImg.length) {
-            setStartImg(startImg + 1);
-            console.log("handle");
-         }
-      }
-
-      if (key === "down") {
-         if (startImg - 1 >= 0) {
-            setStartImg(startImg - 1);
-         }
-      }
-   };
+   //    if (key === "down") {
+   //       if (startImg - 1 >= 0) {
+   //          setStartImg(startImg - 1);
+   //       }
+   //    }
+   // };
 
    return (
       <>
@@ -90,9 +77,9 @@ export const ProductDetail = () => {
                            <div class="product-detail__left-carousel-button product-detail__left-carousel-button-left">
                               <div
                                  class="product-detail__left-carousel-button-bg "
-                                 onClick={() => {
-                                    handleSlideShow("down");
-                                 }}
+                                 // onClick={() => {
+                                 //    handleSlideShow("down");
+                                 // }}
                               >
                                  <LeftOutlined />
                               </div>
@@ -100,16 +87,16 @@ export const ProductDetail = () => {
                            <div class="product-detail__left-carousel-button product-detail__left-carousel-button-right">
                               <div
                                  class="product-detail__left-carousel-button-bg "
-                                 onClick={() => {
-                                    handleSlideShow("up");
-                                 }}
+                                 // onClick={() => {
+                                 //    handleSlideShow("up");
+                                 // }}
                               >
                                  <RightOutlined />
                               </div>
                            </div>
                            <div class="product-detail__left-carousel-list-img">
-                              {imgShow.length > 0 &&
-                                 imgShow.map((ele, index) =>
+                              {tempImg.length > 0 &&
+                                 tempImg.map((ele, index) =>
                                     index === imgActive ? (
                                        <div
                                           class="product-detail__left-img-item"

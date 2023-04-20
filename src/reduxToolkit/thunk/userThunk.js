@@ -1,10 +1,10 @@
-import { async } from "@firebase/util";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
    createUserWithEmailAndPassword,
    sendEmailVerification,
    sendPasswordResetEmail,
    signInWithEmailAndPassword,
+   updatePassword,
 } from "firebase/auth";
 // import { Auth } from "../../Container/auth/Auth";
 import { auth } from "../../firebase/config";
@@ -13,10 +13,10 @@ import { callAPI } from "../../service/callApi";
 export const login = createAsyncThunk(
    "user/login",
    async ({ email, password }) => {
-      const tempUser = {};
+      let tempUser = {};
       try {
          tempUser = await signInWithEmailAndPassword(auth, email, password);
-         // console.log(tempUser.user.emailVerified);
+         console.log(tempUser.user.emailVerified);
       } catch (error) {
          const tempError = {
             message: "Tài khoàn hoặc mật khẩu không đúng ",
@@ -115,6 +115,48 @@ export const updateInfoUser = createAsyncThunk(
       const token = localStorage.getItem("token");
       try {
          const res = await callAPI("auth", "PUT", data, token);
+         return res;
+      } catch (error) {
+         return error.response;
+      }
+   }
+);
+
+export const changePasswordUser = createAsyncThunk(
+   "user/changePassword",
+   async (data) => {
+      // sign in again firebase
+      const token = localStorage.getItem("token");
+      const res = await callAPI("auth", "GET", {}, token);
+
+      try {
+         await signInWithEmailAndPassword(
+            auth,
+            res.data.email,
+            data.oldPassword
+         );
+      } catch (error) {
+         const tempError = {
+            message: "Mật khẩu cũ không đúng ",
+            statusCode: 400,
+         };
+         return tempError;
+      }
+
+      const user = auth.currentUser;
+      try {
+         await updatePassword(user, data.password);
+      } catch (error) {
+         return error;
+      }
+
+      try {
+         const res = await callAPI(
+            "auth",
+            "PUT",
+            { password: data.password },
+            token
+         );
          return res;
       } catch (error) {
          return error.response;

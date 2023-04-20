@@ -18,7 +18,10 @@ import {
 import { formatAddress, formatDate } from "../../service/formater";
 import { useNavigate } from "react-router-dom";
 import { AddressForm } from "../../Component/addressForm/AddressForm";
-import { updateInfoUser } from "../../reduxToolkit/thunk/userThunk";
+import {
+   changePasswordUser,
+   updateInfoUser,
+} from "../../reduxToolkit/thunk/userThunk";
 
 // import { loading } from "../../reduxToolkit/selector/userSelector";
 
@@ -72,6 +75,11 @@ export const AccountDetail = () => {
    const onUpdatePhone = (e) => {
       dispatch(updateInfoUser(e));
       setIsShowPhone(!isShowPhone);
+   };
+
+   const onUpdatePassword = (e) => {
+      dispatch(changePasswordUser(e));
+      setIsShowChangePass(true);
    };
 
    return (
@@ -421,7 +429,7 @@ export const AccountDetail = () => {
                                  Thay đổi mật khẩu
                               </p>
                               <div>
-                                 <Form>
+                                 <Form onFinish={onUpdatePassword}>
                                     <Form.Item
                                        name="oldPassword"
                                        rules={[
@@ -480,6 +488,23 @@ export const AccountDetail = () => {
                                                 );
                                              },
                                           },
+                                          ({ getFieldValue }) => ({
+                                             validator(_, value) {
+                                                if (
+                                                   !value ||
+                                                   getFieldValue(
+                                                      "oldPassword"
+                                                   ) !== value
+                                                ) {
+                                                   return Promise.resolve();
+                                                }
+                                                return Promise.reject(
+                                                   new Error(
+                                                      "Mật khẩu mới giống với mật khẩu cũ vui lòng chọn mật khẩu khác!"
+                                                   )
+                                                );
+                                             },
+                                          }),
                                        ]}
                                        style={{ marginBottom: "16px" }}
                                     >

@@ -19,7 +19,7 @@ export const getProductByID = createAsyncThunk(
    async (id) => {
       try {
          const res = await callAPI(`/product/${id}`, "GET", {});
-         return res.data;
+         return res;
       } catch (error) {
          return error.response.data;
       }

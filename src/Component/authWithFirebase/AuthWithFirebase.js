@@ -54,10 +54,10 @@ export const AuthWithFirebase = () => {
          .then((result) => {
             const user = result.user;
 
-            // const credential =
-            //    FacebookAuthProvider.credentialFromResult(result);
-            // const accessToken = credential.accessToken;
-            // localStorage.setItem("firebaseToken", accessToken);
+            const credential =
+               FacebookAuthProvider.credentialFromResult(result);
+            const accessToken = credential.accessToken;
+            localStorage.setItem("firebaseToken", accessToken);
             console.log(user);
             const tempUser = {
                email: user.email,
