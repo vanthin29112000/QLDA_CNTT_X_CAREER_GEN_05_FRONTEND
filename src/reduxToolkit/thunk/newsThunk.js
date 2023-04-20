@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { callAPI } from "../../service/callApi";
 

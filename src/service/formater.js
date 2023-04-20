@@ -46,14 +46,27 @@ export const splitPageSlideShow = (arr, length) => {
          listRender.push(tempArr);
          tempArr = [];
          i = 0;
-
-         console.log("i", i, tempArr);
       } else {
          i++;
       }
       tempArr.push(arr[index]);
    }
 
-   console.log("products format", listRender);
    return listRender;
+};
+
+export const formatAddress = (address) => {
+   // console.log("address", address.mainAddress);
+   if (address) {
+      if (
+         address.mainAddress &&
+         address.city.id &&
+         address.ward.id &&
+         address.district.id
+      ) {
+         return `${address.mainAddress}, ${address.ward.name}, ${address.district.name}, ${address.city.name}`;
+      } else {
+         return "";
+      }
+   }
 };

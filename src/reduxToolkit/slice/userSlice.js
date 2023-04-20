@@ -2,11 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 // import { message } from "antd";
 import { isError } from "../../service/callApi";
 import {
+   changePasswordUser,
    getProfileUser,
    login,
    loginWithFirebase,
    register,
    resetPasswordWithFirebase,
+   updateInfoUser,
 } from "../thunk/userThunk";
 
 const initialState = {
@@ -48,11 +50,18 @@ const userSlice = createSlice({
             if (!isError(action.payload)) {
                state.isLogin = true;
                localStorage.setItem("token", action.payload.data.user.token);
+               console.log("user", action.payload.data);
+               state.infoUser = {
+                  ...action.payload.data.user.user,
+                  token: action.payload.data.token,
+               };
             } else {
-               state.notification.isShow = true;
-               state.notification.message =
-                  action.payload.data.message || action.payload.message;
-               state.notification.type = "error";
+               // console.log(action.payload.message);
+               state.notification = {
+                  isShow: true,
+                  message: action.payload.message,
+                  type: "error",
+               };
             }
          })
          // register
@@ -106,7 +115,7 @@ const userSlice = createSlice({
                state.isLogin = true;
                localStorage.setItem("token", action.payload.data.token);
                state.infoUser = {
-                  ...action.payload.data,
+                  ...action.payload.data.user,
                   token: action.payload.data.token,
                };
             } else {
@@ -130,6 +139,48 @@ const userSlice = createSlice({
                state.notification.type = "success";
                // state.isLogin = true;
                // localStorage.setItem("token", action.payload.token);
+            } else {
+               state.notification.isShow = true;
+               state.notification.message = action.payload.message;
+               state.notification.type = "error";
+            }
+         })
+         .addCase(updateInfoUser.pending, (state, action) => {
+            state.status = "pending";
+            state.isLoading = true;
+         })
+         .addCase(updateInfoUser.fulfilled, (state, action) => {
+            state.status = "idle";
+            state.isLoading = false;
+            const token = localStorage.getItem("token");
+
+            if (!isError(action.payload)) {
+               state.infoUser = { ...action.payload.data, token };
+               state.notification.message = "Chỉnh sửa thành công";
+               state.notification.type = "success";
+               state.notification.isShow = true;
+               // state.isLogin = true;
+            } else {
+               state.notification.isShow = true;
+               state.notification.message = action.payload.data.message;
+               state.notification.type = "error";
+            }
+         })
+         .addCase(changePasswordUser.pending, (state, action) => {
+            state.status = "pending";
+            state.isLoading = true;
+         })
+         .addCase(changePasswordUser.fulfilled, (state, action) => {
+            state.status = "idle";
+            state.isLoading = false;
+            // const token = localStorage.getItem("token");
+
+            if (!isError(action.payload)) {
+               // state.infoUser = { ...action.payload.data, token };
+               state.notification.message = "Chỉnh sửa thành công";
+               state.notification.type = "success";
+               state.notification.isShow = true;
+               // state.isLogin = true;
             } else {
                state.notification.isShow = true;
                state.notification.message = action.payload.message;

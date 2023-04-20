@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "./Homepage.css";
 import { SliderHomePage } from "../../Component/sliderHomePage/SliderHomePage";
 import { FeaturedProduct } from "./FeaturedProduct";
-import { Button, Carousel } from "antd";
+import { Button, Carousel, Skeleton } from "antd";
 import { RightOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -30,7 +30,7 @@ export const Homepage = () => {
    }, []);
 
    return (
-      <div>
+      <div style={{ paddingBottom: "32px" }}>
          <SliderHomePage></SliderHomePage>
 
          <div class="container">
