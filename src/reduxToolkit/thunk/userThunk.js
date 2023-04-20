@@ -13,7 +13,7 @@ import { callAPI } from "../../service/callApi";
 export const login = createAsyncThunk(
    "user/login",
    async ({ email, password }) => {
-      let tempUser = {};
+      const tempUser = {};
       try {
          tempUser = await signInWithEmailAndPassword(auth, email, password);
          // console.log(tempUser.user.emailVerified);
@@ -67,24 +67,12 @@ export const register = createAsyncThunk("user/register", async (data) => {
    }
 });
 
-export const getProfileUser = createAsyncThunk(
-   "user/getProfileUser",
-   async (token) => {
-      try {
-         const res = await callAPI("auth", "GET", {}, token);
-         return res;
-      } catch (error) {
-         return error.response;
-      }
-   }
-);
-
 export const loginWithFirebase = createAsyncThunk(
    "user/loginWithFirebase",
    async (data) => {
       try {
          const res = await callAPI("auth/login/firebase", "POST", data);
-
+         console.log("userFirebase", res);
          return res;
       } catch (error) {
          return error.response;
@@ -105,6 +93,31 @@ export const resetPasswordWithFirebase = createAsyncThunk(
          };
          console.log(tempError, error);
          return tempError;
+      }
+   }
+);
+
+export const getProfileUser = createAsyncThunk(
+   "user/getProfileUser",
+   async (token) => {
+      try {
+         const res = await callAPI("auth", "GET", {}, token);
+         return res;
+      } catch (error) {
+         return error.response;
+      }
+   }
+);
+
+export const updateInfoUser = createAsyncThunk(
+   "user/updateInfoUser",
+   async (data) => {
+      const token = localStorage.getItem("token");
+      try {
+         const res = await callAPI("auth", "PUT", data, token);
+         return res;
+      } catch (error) {
+         return error.response;
       }
    }
 );

@@ -2,39 +2,49 @@ import React, { useEffect, useState } from "react";
 import { Avatar } from "../../Layout/avatar/Avatar";
 import "./AccountDetail.css";
 import moment from "moment";
-import { LockOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons";
+import {
+   AimOutlined,
+   LockOutlined,
+   MailOutlined,
+   PhoneOutlined,
+} from "@ant-design/icons";
 import { Button, Checkbox, DatePicker, Form, Input, Radio, Select } from "antd";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
    isLogin,
    loadingUser,
    userInfo,
 } from "../../reduxToolkit/selector/userSelector";
-import { formatDate } from "../../service/formater";
+import { formatAddress, formatDate } from "../../service/formater";
 import { useNavigate } from "react-router-dom";
+import { AddressForm } from "../../Component/addressForm/AddressForm";
+import { updateInfoUser } from "../../reduxToolkit/thunk/userThunk";
+
 // import { loading } from "../../reduxToolkit/selector/userSelector";
 
 // const { Option } = Select;
 export const AccountDetail = () => {
    const [isShowPhone, setIsShowPhone] = useState(true);
    const [isShowChangePass, setIsShowChangePass] = useState(true);
+   const [isShowChangeAddess, setIsShowChangeAddress] = useState(true);
+   const [avatar, setAvatar] = useState("");
+
    const formRef = React.useRef(null);
+   const phoneRef = React.useRef(null);
    const accountInfo = useSelector(userInfo);
    const isAuth = useSelector(isLogin);
    const isLoading = useSelector(loadingUser);
    const navigate = useNavigate();
+
+   const dispatch = useDispatch();
    const token = localStorage.getItem("token");
+
    useEffect(() => {
       console.log("auth", isAuth, isLoading, accountInfo);
       if (!isAuth && !token) {
          navigate("/");
       }
    }, [isAuth]);
-
-   const onChangeIsShow = () => {
-      console.log("change");
-      setIsShowPhone(!isShowPhone);
-   };
 
    const dateFormat = "DD/MM/YYYY";
 
@@ -43,11 +53,26 @@ export const AccountDetail = () => {
          let tempBirthday = formatDate(accountInfo.birthday);
 
          formRef.current?.setFieldsValue({
-            fullName: accountInfo.name,
-            birthDay: moment(tempBirthday, dateFormat),
+            name: accountInfo.name,
+            birthday: moment(tempBirthday, dateFormat),
+            nationality: accountInfo.nationality,
+            gender: accountInfo.gender,
+         });
+
+         phoneRef.current?.setFieldsValue({
+            phone: accountInfo.phone,
          });
       }
    }, [accountInfo]);
+
+   const onUpdateInfoUser = (e) => {
+      dispatch(updateInfoUser({ ...e, avatar }));
+   };
+
+   const onUpdatePhone = (e) => {
+      dispatch(updateInfoUser(e));
+      setIsShowPhone(!isShowPhone);
+   };
 
    return (
       <div class="account-detail__container">
@@ -79,7 +104,12 @@ export const AccountDetail = () => {
                               Thông tin cá nhân
                            </p>
                            <div class="ad__avatar">
-                              <Avatar imgDefault={accountInfo.avatar}></Avatar>
+                              <Avatar
+                                 imgDefault={accountInfo.avatar}
+                                 onChangeFileImg={(e) => {
+                                    setAvatar(e);
+                                 }}
+                              ></Avatar>
                            </div>
                            <div class="add__user-info-detail">
                               <div class="add__user-info-item">
@@ -89,13 +119,11 @@ export const AccountDetail = () => {
                                     wrapperCol={{ span: 16 }}
                                     ref={formRef}
                                     initialValues={{ remember: true }}
-                                    // onFinish={onFinish}
-                                    // onFinishFailed={onFinishFailed}
-                                    // autoComplete="off"
+                                    onFinish={onUpdateInfoUser}
                                  >
                                     <Form.Item
                                        label="Họ và tên"
-                                       name="fullName"
+                                       name="name"
                                        rules={[
                                           {
                                              required: true,
@@ -107,22 +135,9 @@ export const AccountDetail = () => {
                                        <Input />
                                     </Form.Item>
 
-                                    {/* <Form.Item
-                                       label="Nickname"
-                                       name="nickname"
-                                       rules={[
-                                          {
-                                             required: true,
-                                             message:
-                                                "Vui lòng nhập nickname của bạn!",
-                                          },
-                                       ]}
-                                    >
-                                       <Input />
-                                    </Form.Item> */}
                                     <Form.Item
                                        label="Ngày sinh"
-                                       name="birthDay"
+                                       name="birthday"
                                        rules={[
                                           {
                                              required: true,
@@ -131,33 +146,10 @@ export const AccountDetail = () => {
                                           },
                                        ]}
                                     >
-                                       <DatePicker
-                                          // defaultValue={moment(
-                                          //    formatDate(accountInfo.birthday) ||
-                                          //       "01/01/2023",
-                                          //    dateFormat
-                                          // )}
-
-                                          // defaultValue={moment(
-                                          //    accountInfo.birthday && "",
-                                          //    dateFormat
-                                          // )}
-                                          format={dateFormat}
-                                       />
+                                       <DatePicker format={dateFormat} />
                                     </Form.Item>
 
-                                    <Form.Item
-                                       label="Giới tính"
-                                       name="gender"
-                                       rules={[
-                                          {
-                                             required: true,
-                                             message:
-                                                "Vui lòng chọn giới tính!",
-                                          },
-                                       ]}
-                                       initialValue={accountInfo.gender || -1}
-                                    >
+                                    <Form.Item label="Giới tính" name="gender">
                                        <Radio.Group>
                                           <Radio value={0}>Nam</Radio>
                                           <Radio value={1}>Nữ</Radio>
@@ -189,7 +181,11 @@ export const AccountDetail = () => {
                                     <Form.Item
                                        wrapperCol={{ offset: 9, span: 16 }}
                                     >
-                                       <Button type="primary" htmlType="submit">
+                                       <Button
+                                          type="primary"
+                                          htmlType="submit"
+                                          // onClick={onUpdateInfoUser}
+                                       >
                                           Lưu thay đổi
                                        </Button>
                                     </Form.Item>
@@ -211,7 +207,7 @@ export const AccountDetail = () => {
                         >
                            Số điện thoại và Email
                         </p>
-                        <Form onFinish={onChangeIsShow}>
+                        <Form ref={phoneRef} onFinish={onUpdatePhone}>
                            <div class="ad__user-info-item">
                               <div class="ad__user-detail-item">
                                  <PhoneOutlined
@@ -225,7 +221,7 @@ export const AccountDetail = () => {
                                     <p>Số điện thoại</p>
                                     {isShowPhone ? (
                                        <p style={{ fontWeight: "500" }}>
-                                          (+84) {accountInfo.phone}
+                                          {accountInfo.phone}
                                        </p>
                                     ) : (
                                        <Form.Item
@@ -242,18 +238,14 @@ export const AccountDetail = () => {
                                                    "Vui lòng nhập đúng định dạng !",
                                              },
                                              {
-                                                min: 9,
+                                                min: 10,
                                                 message:
                                                    "Số điện thoại không đúng !",
                                              },
                                           ]}
                                           style={{ marginBottom: "0px" }}
                                        >
-                                          <Input
-                                             addonBefore={"(+84)"}
-                                             defaultValue={accountInfo.phone}
-                                             style={{ width: "100%" }}
-                                          />
+                                          <Input style={{ width: "100%" }} />
                                        </Form.Item>
                                     )}
                                  </div>
@@ -262,19 +254,34 @@ export const AccountDetail = () => {
                                  <Button
                                     type="primary"
                                     ghost
-                                    onClick={onChangeIsShow}
+                                    onClick={() => {
+                                       setIsShowPhone(false);
+                                    }}
                                     style={{ marginTop: "22px" }}
                                  >
                                     Thay đổi
                                  </Button>
                               ) : (
-                                 <Button
-                                    type="primary"
-                                    style={{ marginTop: "22px" }}
-                                    htmlType="submit"
-                                 >
-                                    Cập nhật
-                                 </Button>
+                                 <div>
+                                    <Button
+                                       style={{
+                                          marginTop: "22px",
+                                          marginRight: "8px",
+                                       }}
+                                       onClick={() => {
+                                          setIsShowPhone(true);
+                                       }}
+                                    >
+                                       Quay lại
+                                    </Button>
+                                    <Button
+                                       type="primary"
+                                       style={{ marginTop: "22px" }}
+                                       htmlType="submit"
+                                    >
+                                       Cập nhật
+                                    </Button>
+                                 </div>
                               )}
                            </div>{" "}
                         </Form>
@@ -298,6 +305,69 @@ export const AccountDetail = () => {
                         </div>
                      </div>
 
+                     {/* Địa chỉ */}
+                     <div class="ad__user-info">
+                        <p
+                           style={{
+                              fontSize: "18px",
+                              fontWeight: "400",
+                              color: "rgb(100, 100, 109)",
+                              margin: "0",
+                              paddingRight: "8px",
+                           }}
+                        >
+                           Địa chỉ giao hàng
+                        </p>
+
+                        {isShowChangeAddess ? (
+                           <div class="ad__user-info-item">
+                              <div class="ad__user-detail-item">
+                                 {isShowChangeAddess && (
+                                    <AimOutlined
+                                       style={{
+                                          fontSize: "24px",
+                                          marginRight: "16px",
+                                          color: "#D3D3D8",
+                                       }}
+                                    />
+                                 )}
+                                 <div
+                                    class="ad__user-detail-title"
+                                    style={{ width: "100%" }}
+                                 >
+                                    <p>Địa chỉ</p>
+                                    <p style={{ fontWeight: "500" }}>
+                                       {formatAddress(accountInfo.address)}
+                                    </p>
+                                 </div>
+                              </div>
+
+                              <Button
+                                 type="primary"
+                                 ghost
+                                 onClick={() => {
+                                    setIsShowChangeAddress(false);
+                                 }}
+                                 style={{ marginTop: "22px" }}
+                              >
+                                 Thay đổi
+                              </Button>
+                           </div>
+                        ) : (
+                           <div
+                              style={{
+                                 borderBottom: "1px solid rgba(0,0,0,.12)",
+                                 padding: "16px 0px",
+                              }}
+                           >
+                              <AddressForm
+                                 addressInfo={accountInfo.address}
+                                 setIsShowChangeAddress={setIsShowChangeAddress}
+                              ></AddressForm>
+                           </div>
+                        )}
+                     </div>
+                     {/*  */}
                      <div class="ad__user-info">
                         <p
                            style={{

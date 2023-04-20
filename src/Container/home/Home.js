@@ -31,7 +31,7 @@ export const Home = () => {
             name: infoUser.name,
             avatar: infoUser.avatar || "",
          };
-
+         console.log("infoUser", infoUser);
          // const newPostKey = push(child(ref(db), "group/" + infoUser._id)).key;
          const updates = {};
          updates[`/member/${infoUser._id}`] = {

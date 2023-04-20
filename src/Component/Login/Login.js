@@ -13,6 +13,10 @@ export const Login = () => {
    const navigate = useNavigate();
 
    useEffect(() => {
+      console.log("login with firebase");
+   }, []);
+
+   useEffect(() => {
       if (isAuth) {
          navigate("/");
       }
@@ -97,7 +101,7 @@ export const Login = () => {
                Hoặc
             </Divider>
 
-            <AuthWithFirebase></AuthWithFirebase>
+            {!isAuth && <AuthWithFirebase></AuthWithFirebase>}
          </div>
          <div class="auth__login-bottom">
             <div class="auth__login-noAccount">

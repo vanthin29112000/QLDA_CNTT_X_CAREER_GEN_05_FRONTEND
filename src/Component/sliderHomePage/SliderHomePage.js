@@ -5,15 +5,14 @@ import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { productSliderList } from "../../reduxToolkit/selector/productsSelector";
 import { formatDate } from "../../service/formater";
+import { useNavigate } from "react-router-dom";
 export const SliderHomePage = () => {
    const [sliderIndex, setSliderIndex] = useState(0);
    const refSlider = useRef();
-
+   const navigate = useNavigate();
    const products = useSelector(productSliderList);
 
-   useEffect(() => {
-      console.log("products", products);
-   }, [products]);
+   const tempArr = [1, 2, 3, 4, 5];
 
    const onNextSlider = () => {
       if (sliderIndex < 4) {
@@ -75,6 +74,9 @@ export const SliderHomePage = () => {
                                     <Button
                                        type="primary"
                                        style={{ marginTop: "16px" }}
+                                       onClick={() => {
+                                          navigate(`/product/${ele._id}`);
+                                       }}
                                     >
                                        Xem chi tiết
                                     </Button>
@@ -98,8 +100,8 @@ export const SliderHomePage = () => {
                   <UpOutlined />
                </div>
                <div class="homepage-carousel__dot-item">
-                  {products.length > 0 &&
-                     products.map((ele, index) =>
+                  {tempArr.length > 0 &&
+                     tempArr.map((ele, index) =>
                         index === sliderIndex ? (
                            <div
                               class="carousel__dot-style carousel__dot-active"
