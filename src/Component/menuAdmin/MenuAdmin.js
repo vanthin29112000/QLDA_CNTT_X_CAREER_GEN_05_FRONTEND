@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
    AppstoreOutlined,
+   ExclamationCircleFilled,
    ExportOutlined,
    IdcardOutlined,
    MenuFoldOutlined,
@@ -11,8 +12,12 @@ import {
    UserOutlined,
 } from "@ant-design/icons";
 import "./menuAdmin.css";
-import { Avatar, Button, Menu } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Avatar, Button, Menu, Modal } from "antd";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { userInfo } from "../../reduxToolkit/selector/staffSelector";
+import { signOutStaff } from "../../reduxToolkit/slice/staffSlice";
+const { confirm } = Modal;
 function getItem(label, key, icon, children, type) {
    return {
       key,
@@ -22,6 +27,7 @@ function getItem(label, key, icon, children, type) {
       type,
    };
 }
+
 const items = [
    getItem("Thống kê", "1", <PieChartOutlined />),
    getItem("Đơn hàng", "2", <ShoppingCartOutlined />),
@@ -29,17 +35,59 @@ const items = [
    getItem("Quản lý người dùng", "4", <IdcardOutlined />),
    getItem("Quản lý tin tức", "5", <AppstoreOutlined />),
 ];
+
 export const MenuAdmin = () => {
    const [collapsed, setCollapsed] = useState(true);
+   const [key, setKey] = useState("1");
+   const infoStaff = useSelector(userInfo);
+   const dispatch = useDispatch();
+   const naviagte = useNavigate();
+   const location = useLocation();
+
+   useEffect(() => {
+      const path = location.pathname.split("/")[2];
+      switch (path) {
+         case "users-management": {
+            setKey("4");
+            break;
+         }
+         case "news-management": {
+            setKey("5");
+            break;
+         }
+         default: {
+            break;
+         }
+      }
+   }, []);
+
    const toggleCollapsed = () => {
       setCollapsed(!collapsed);
    };
-   const naviagte = useNavigate();
+
+   const showPromiseConfirm = () => {
+      confirm({
+         title: "Bạn có thực sự muốn đăng xuất khỏi trang này?",
+         icon: <ExclamationCircleFilled />,
+         okText: "Đồng ý",
+         cancelText: "Quay lại",
+         onOk() {
+            dispatch(signOutStaff());
+         },
+         onCancel() {},
+      });
+   };
 
    const onChangeClick = (item) => {
       const { key } = item;
       switch (key) {
+         case "4": {
+            setKey("4");
+            naviagte("/admin/users-management");
+            break;
+         }
          case "5": {
+            setKey("5");
             naviagte("/admin/news-management");
             break;
          }
@@ -109,8 +157,8 @@ export const MenuAdmin = () => {
 
          <div style={{ width: 256, height: "100vh" }}>
             <Menu
-               defaultSelectedKeys={["1"]}
-               defaultOpenKeys={["sub1"]}
+               selectedKeys={key}
+               // defaultOpenKeys={key}
                mode="inline"
                theme="dark"
                inlineCollapsed={collapsed}
@@ -163,7 +211,7 @@ export const MenuAdmin = () => {
                            }}
                         >
                            <span style={{ fontWeight: "500" }}>
-                              Phan Văn Thìn
+                              {infoStaff.name}
                            </span>
                            <span
                               style={{ fontSize: "0.8em", color: "#bcbcbc" }}
@@ -178,6 +226,9 @@ export const MenuAdmin = () => {
                               paddingRight: "12px",
                               fontSize: "1.2em",
                               cursor: "pointer",
+                           }}
+                           onClick={() => {
+                              showPromiseConfirm();
                            }}
                         />
                      </>

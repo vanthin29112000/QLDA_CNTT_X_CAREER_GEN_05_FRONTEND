@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { callAPI } from "../../service/callApi";
 
@@ -29,6 +28,19 @@ export const getAllNews = createAsyncThunk("news/getAllNews", async () => {
       return error.response.data;
    }
 });
+
+export const getLatestNews = createAsyncThunk(
+   "news/getLatestNews",
+   async () => {
+      try {
+         const res = await callAPI("/news/latest", "GET", {});
+
+         return res;
+      } catch (error) {
+         return error.response.data;
+      }
+   }
+);
 
 export const GetNewByID = createAsyncThunk("news/getNewByID", async (id) => {
    try {

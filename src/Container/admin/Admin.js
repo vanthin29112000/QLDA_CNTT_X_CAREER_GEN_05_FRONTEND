@@ -2,11 +2,14 @@ import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Badge } from "antd";
 import { child, get, onValue, query, ref, update } from "firebase/database";
 import React, { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Chat } from "../../Component/Chat/Chat";
 import { MenuAdmin } from "../../Component/menuAdmin/MenuAdmin";
 import { database } from "../../firebase/config";
 import "./admin.css";
+import { useDispatch, useSelector } from "react-redux";
+import { isLogin } from "../../reduxToolkit/selector/staffSelector";
+import { getProfileStaff } from "../../reduxToolkit/thunk/staffThunk";
 export const Admin = () => {
    const [userIdChat, setUserIdChat] = useState("");
    const [userListGroup, setUserListGroup] = useState("");
@@ -14,7 +17,21 @@ export const Admin = () => {
    const [listMess, setListMess] = useState([]);
    const [isOpenChat, setIsOpenChat] = useState(false);
    const [countChat, setCountChat] = useState(0);
+   const dispatch = useDispatch();
+   const isAuth = useSelector(isLogin);
+   const navigate = useNavigate();
+
    const db = database;
+
+   useEffect(() => {
+      const token = localStorage.getItem("tokenAdmin");
+      console.log("check", token, isAuth);
+      if (token || isAuth) {
+         dispatch(getProfileStaff());
+      } else {
+         navigate("/loginAdmin");
+      }
+   }, [isAuth]);
 
    useEffect(() => {
       const starCountRef = query(ref(db, "group/"));
@@ -88,7 +105,7 @@ export const Admin = () => {
                infoUser: listMember[ele].infoUser,
             };
 
-            console.log("temp", tempObject);
+            // console.log("temp", tempObject);
             tempArr.push(tempObject);
          }
          setListMess(tempArr);

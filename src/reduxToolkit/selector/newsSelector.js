@@ -8,6 +8,7 @@ export const notification = (state) => state.news.notification;
 export const isLoading = (state) => state.news.isLoading;
 export const sortItem = (state) => state.news.sort;
 export const news = (state) => state.news.newsDetail;
+export const latestNewsList = (state) => state.news.latestNews;
 
 export const type = {
    technology: "Công nghệ",
@@ -18,11 +19,11 @@ export const type = {
 };
 
 const splitPageSlideShow = (arr) => {
-   let i = 0;
+   let i = -1;
    let listRender = [];
    let tempArr = [];
    for (let index = 0; index <= arr.length; index++) {
-      if (i === 3 || index === arr.length) {
+      if (i === 2 || index === arr.length) {
          listRender.push(tempArr);
          tempArr = [];
          i = 0;

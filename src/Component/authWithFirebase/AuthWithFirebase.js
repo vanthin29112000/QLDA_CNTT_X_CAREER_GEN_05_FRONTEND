@@ -1,23 +1,29 @@
 import { Button } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import {
    signInWithPopup,
    GoogleAuthProvider,
    FacebookAuthProvider,
+   // signInWithRedirect,
 } from "firebase/auth";
 import { auth } from "../../firebase/config";
 import { useDispatch } from "react-redux";
 import { loginWithFirebase } from "../../reduxToolkit/thunk/userThunk";
+import { useNavigate } from "react-router-dom";
 
 export const AuthWithFirebase = () => {
    const dispatch = useDispatch();
+   const navigate = useNavigate();
+
    const handleLoginWithGoogle = () => {
       const provider = new GoogleAuthProvider();
+
       signInWithPopup(auth, provider)
          .then((result) => {
             const credential = GoogleAuthProvider.credentialFromResult(result);
 
             const token = credential.accessToken;
+            console.log("token", token);
             const user = result.user;
             console.log(user);
             const tempUser = {
@@ -28,6 +34,7 @@ export const AuthWithFirebase = () => {
                token: user.accessToken,
             };
             dispatch(loginWithFirebase(tempUser));
+            navigate("/");
          })
          .catch((error) => {
             // Handle Errors here.
@@ -50,8 +57,7 @@ export const AuthWithFirebase = () => {
             const credential =
                FacebookAuthProvider.credentialFromResult(result);
             const accessToken = credential.accessToken;
-            // localStorage.setItem("firebaseToken", accessToken);
-
+            localStorage.setItem("firebaseToken", accessToken);
             console.log(user);
             const tempUser = {
                email: user.email,
@@ -61,6 +67,7 @@ export const AuthWithFirebase = () => {
                token: user.accessToken,
             };
             dispatch(loginWithFirebase(tempUser));
+            navigate("/");
          })
          .catch((error) => {
             // Handle Errors here.
@@ -70,7 +77,7 @@ export const AuthWithFirebase = () => {
             const email = error.customData.email;
             // The AuthCredential type that was used.
             const credential = FacebookAuthProvider.credentialFromError(error);
-
+            console.log("error", error);
             // ...
          });
    };

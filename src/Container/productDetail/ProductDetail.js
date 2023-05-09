@@ -8,61 +8,44 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { HandleAmount } from "../../Layout/handleAmount/HandleAmount";
-import { productDetail } from "../../reduxToolkit/selector/productsSelector";
-import { getProductByID } from "../../reduxToolkit/thunk/productThunk";
+import { productDetailItem } from "../../reduxToolkit/selector/productsSelector";
+import {
+   addProductInCart,
+   getProductByID,
+   updateProductInCart,
+} from "../../reduxToolkit/thunk/productThunk";
 import { formatDate, formatVND } from "../../service/formater";
 import "./ProductDetail.css";
 export const ProductDetail = () => {
    const params = useParams();
    const dispatch = useDispatch();
-   const productInfo = useSelector(productDetail);
+   const productInfo = useSelector(productDetailItem);
 
    const [qtyProduct, setQtyProduct] = useState(1);
    const [imgActive, setImgActive] = useState(0);
    const [tempImg, setTempImg] = useState([]);
-   const [startImg, setStartImg] = useState(0);
-   const [imgShow, setImgShow] = useState([]);
+
    useEffect(() => {
       const id = params.id;
       dispatch(getProductByID(id));
    }, []);
 
    useEffect(() => {
-      if (productInfo.length > 0) {
-         setTempImg([productInfo[0].brand.img, ...productInfo[0].image]);
+      console.log("product ", productInfo);
+
+      if (productInfo) {
+         setTempImg([productInfo.brand.img, ...productInfo.images]);
          console.log("image", tempImg);
       }
    }, [productInfo]);
 
-   useEffect(() => {
-      if (startImg + 4 <= tempImg.length && tempImg.length > 0) {
-         let temp = [];
-         for (let i = startImg; i < startImg + 4; i++) {
-            temp.push(tempImg[i]);
-         }
-         console.log("temp", temp);
-         setImgShow(temp);
-      }
-   }, [tempImg, startImg]);
-
-   const handleSlideShow = (key) => {
-      if (key === "up") {
-         if (startImg + 5 <= tempImg.length) {
-            setStartImg(startImg + 1);
-            console.log("handle");
-         }
-      }
-
-      if (key === "down") {
-         if (startImg - 1 >= 0) {
-            setStartImg(startImg - 1);
-         }
-      }
+   const onAddProductInCart = (id) => {
+      dispatch(addProductInCart({ id: id, quantity: qtyProduct }));
    };
 
    return (
       <>
-         {productInfo.length > 0 && (
+         {!!productInfo && (
             <div class="product-detail__container">
                <div class="product-detail__bg">
                   <div class="product-detail__top row g-0">
@@ -87,9 +70,9 @@ export const ProductDetail = () => {
                            <div class="product-detail__left-carousel-button product-detail__left-carousel-button-left">
                               <div
                                  class="product-detail__left-carousel-button-bg "
-                                 onClick={() => {
-                                    handleSlideShow("down");
-                                 }}
+                                 // onClick={() => {
+                                 //    handleSlideShow("down");
+                                 // }}
                               >
                                  <LeftOutlined />
                               </div>
@@ -97,16 +80,16 @@ export const ProductDetail = () => {
                            <div class="product-detail__left-carousel-button product-detail__left-carousel-button-right">
                               <div
                                  class="product-detail__left-carousel-button-bg "
-                                 onClick={() => {
-                                    handleSlideShow("up");
-                                 }}
+                                 // onClick={() => {
+                                 //    handleSlideShow("up");
+                                 // }}
                               >
                                  <RightOutlined />
                               </div>
                            </div>
                            <div class="product-detail__left-carousel-list-img">
-                              {imgShow.length > 0 &&
-                                 imgShow.map((ele, index) =>
+                              {tempImg.length > 0 &&
+                                 tempImg.map((ele, index) =>
                                     index === imgActive ? (
                                        <div
                                           class="product-detail__left-img-item"
@@ -146,28 +129,28 @@ export const ProductDetail = () => {
                         <p class="product-detail__right-brand">
                            Thương hiệu :
                            <p class="product-detail__right-brand-item">
-                              {productInfo[0].brand.name}
+                              {productInfo.brand.name}
                            </p>
                         </p>
 
                         <div class="product-detail__right-name-product-timeline">
                            <p class="product-detail__right-name-product">
-                              {productInfo[0].name}
+                              {productInfo.name}
                            </p>
                         </div>
 
                         <div class="product-detail__right-price-bg">
                            <p class="product-detail__right-price">
-                              {formatVND(productInfo[0].price)}
+                              {formatVND(productInfo.price)}
                            </p>
                         </div>
 
                         <div class="product-detail__right-content-bg">
-                           <p class="">{productInfo[0].desc}</p>
+                           <p class="">{productInfo.desc}</p>
                            <p class="product-detail__right-timeline">
                               Voucher áp dụng :{" "}
-                              {formatDate(productInfo[0].effectiveDate)} -{" "}
-                              {formatDate(productInfo[0].expirationDate)}
+                              {formatDate(productInfo.effectiveDate)} -{" "}
+                              {formatDate(productInfo.expirationDate)}
                            </p>
                         </div>
 
@@ -177,13 +160,19 @@ export const ProductDetail = () => {
                            </p>
                            <div class="product-detail__right-amount">
                               <HandleAmount
-                                 max={productInfo[0].countInStock}
+                                 max={
+                                    productInfo.countInStock -
+                                    productInfo.countSold
+                                 }
                                  value={qtyProduct}
                                  setValue={setQtyProduct}
                               ></HandleAmount>
 
                               <p class="product-detail__right-qty">
-                                 ( Còn {productInfo[0].countInStock} voucher )
+                                 ( Còn{" "}
+                                 {productInfo.countInStock -
+                                    productInfo.countSold}{" "}
+                                 voucher )
                               </p>
                            </div>
                         </div>
@@ -198,6 +187,9 @@ export const ProductDetail = () => {
                                  color: "#d0011b",
                                  display: "flex",
                                  alignItems: "center",
+                              }}
+                              onClick={() => {
+                                 onAddProductInCart(productInfo._id);
                               }}
                            >
                               <ShoppingCartOutlined />

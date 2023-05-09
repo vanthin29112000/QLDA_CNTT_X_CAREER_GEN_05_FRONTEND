@@ -1,17 +1,27 @@
 import { Button, Progress } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { formatDate, formatVND } from "../../service/formater";
+import { useDispatch } from "react-redux";
+import {
+   addProductInCart,
+   updateProductInCart,
+} from "../../reduxToolkit/thunk/productThunk";
 
 export const Product = ({ product }) => {
    const navigate = useNavigate();
+   const dispatch = useDispatch();
+
+   const onAddProductInCart = (id) => {
+      dispatch(addProductInCart({ id: id, quantity: 1 }));
+   };
 
    const widthProcess = Math.floor(
       ((product.countInStock - product.countSold) / product.countInStock) * 100
    );
 
    return (
-      <div class="pagination__product-item col-12 col-md-6 col-lg-4 col-xl-3">
+      <>
          <div class="pagination__product-item-bg">
             {/* {console.log(widthProcess)} */}
             <div
@@ -78,13 +88,19 @@ export const Product = ({ product }) => {
                            </div>
                         </div>
                      </div>
-                     <Button type="primary" style={{ height: "48px" }}>
+                     <Button
+                        type="primary"
+                        style={{ height: "48px" }}
+                        onClick={() => {
+                           onAddProductInCart(product._id);
+                        }}
+                     >
                         Mua ngay
                      </Button>
                   </>
                )}
             </div>
          </div>
-      </div>
+      </>
    );
 };

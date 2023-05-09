@@ -6,37 +6,108 @@ import {
    RightOutlined,
 } from "@ant-design/icons";
 import { Button, Checkbox, Divider, Input } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ProductInCart } from "../../Component/productInCart/ProductInCart";
 import { Atm } from "../../Layout/payment/atm/Atm";
 import { Visa } from "../../Layout/payment/visa/Visa";
 import "./ShoppingCart.css";
+import { useDispatch, useSelector } from "react-redux";
+import {
+   getAllProductInCart,
+   paymentOrders,
+} from "../../reduxToolkit/thunk/productThunk";
+import { productInCart } from "../../reduxToolkit/selector/productsSelector";
+import { userInfo } from "../../reduxToolkit/selector/userSelector";
+import { formatVND } from "../../service/formater";
 export const ShoppingCart = () => {
    const [isShowCard, setIsShowCard] = useState(true);
    const [cardType, setIsCardType] = useState(-1);
+   const [totalCost, setTotalCost] = useState({
+      count: 0,
+      totalPrice: 0,
+      ship: 15000,
+      total: 0,
+   });
 
+   const dispatch = useDispatch();
+   const userDetail = useSelector(userInfo);
+   const productsList = useSelector(productInCart);
    const cardTypeList = [
       {
          id: 0,
          img: `./images/logo-payment/unnamed.png`,
+         name: "zalopay",
       },
       {
          id: 1,
          img: `./images/logo-payment/momo_icon_square_pinkbg.svg`,
+         name: "momo",
       },
       {
          id: 2,
          img: `./images/logo-payment/visa.png`,
+         name: "visa",
       },
       {
          id: 3,
          img: `./images/logo-payment/icon-payment-method-atm.svg`,
+         name: "atm",
       },
    ];
+
+   useEffect(() => {
+      let temp = {
+         count: 0,
+         totalPrice: 0,
+         ship: 15000,
+         total: 0,
+      };
+      productsList.forEach((ele) => {
+         temp.count += ele.quantity;
+         temp.totalPrice += ele.quantity * ele.infoProduct.price;
+         temp.total = temp.totalPrice + temp.ship;
+      });
+      temp.ship = 15000;
+
+      setTotalCost(temp);
+   }, [productsList]);
+
+   useEffect(() => {
+      dispatch(getAllProductInCart());
+   }, []);
 
    const onChangeCardType = (key) => {
       if (key >= 0 && key <= 3) {
          setIsCardType(key);
+      }
+   };
+
+   const onPaymentOrder = () => {
+      if (cardType !== -1) {
+         const temp = productsList.map((ele) => {
+            return {
+               idP: ele.infoProduct._id,
+               name: ele.infoProduct.name,
+               qty: ele.quantity,
+               img: ele.infoProduct.brand.img,
+               price: ele.infoProduct.price,
+               effectiveDate: ele.infoProduct.effectiveDate,
+               expirationDate: ele.infoProduct.expirationDate,
+            };
+         });
+
+         console.log("temp", temp);
+         dispatch(
+            paymentOrders({
+               userID: userDetail._id,
+               phone: userDetail.phone,
+               email: userDetail.email,
+               address: userDetail.address,
+               statusOrder: "newOrder",
+               orderItems: temp,
+               paymentType: cardTypeList[cardType].name,
+            })
+         );
       }
    };
 
@@ -64,7 +135,7 @@ export const ShoppingCart = () => {
                                     padding: "0px 16px",
                                  }}
                               >
-                                 <Checkbox></Checkbox>{" "}
+                                 {/* <Checkbox></Checkbox>{" "} */}
                                  <p
                                     style={{
                                        width: "fit-content",
@@ -83,20 +154,15 @@ export const ShoppingCart = () => {
                      </div>
 
                      <div class="shopping-cart__info-product-item sc__list-product">
-                        <ProductInCart></ProductInCart>
-                        <Divider style={{ margin: " 0px" }} />
-                        <ProductInCart></ProductInCart>
-                        <Divider style={{ margin: " 0px" }} />
-                        <ProductInCart></ProductInCart>
-                        <Divider style={{ margin: " 0px" }} />
-                        <ProductInCart></ProductInCart>
-                        <Divider style={{ margin: "0px" }} />
-                        <ProductInCart></ProductInCart>
-                        <Divider style={{ margin: " 0px" }} />
-                        <ProductInCart></ProductInCart>
-                        <Divider style={{ margin: "0px" }} />
-                        <ProductInCart></ProductInCart>
-                        <Divider style={{ margin: " 0px" }} />
+                        {productsList.length > 0 &&
+                           productsList.map((ele) => (
+                              <>
+                                 <ProductInCart
+                                    productItem={ele}
+                                 ></ProductInCart>
+                                 <Divider style={{ margin: " 0px" }} />
+                              </>
+                           ))}
                      </div>
                   </div>
                </div>
@@ -112,7 +178,7 @@ export const ShoppingCart = () => {
                               Thông tin khách hàng
                            </p>
                            <a
-                              href="/"
+                              href="/accountDetail"
                               style={{
                                  color: "rgb(11, 116, 229)",
                               }}
@@ -122,7 +188,11 @@ export const ShoppingCart = () => {
                         </div>
                         <div class="sc__info-user-content">
                            <div class="sc__info-user-content-item">
-                              <p>Phan Văn Thìn </p>{" "}
+                              <p>
+                                 {userDetail !== ""
+                                    ? userDetail.name
+                                    : "Không có"}{" "}
+                              </p>{" "}
                               <div
                                  style={{
                                     fontWeight: "300",
@@ -132,11 +202,21 @@ export const ShoppingCart = () => {
                               >
                                  |
                               </div>{" "}
-                              <p>0909*******</p>
+                              <p>
+                                 {" "}
+                                 {userDetail !== ""
+                                    ? userDetail.phone
+                                    : "Không có"}
+                              </p>
                            </div>
                            <div class="sc__info-user-content-email">
                               <MailOutlined style={{ marginRight: "4px" }} />
-                              <p>vanthin1203@gmail.com</p>
+                              <p>
+                                 {" "}
+                                 {userDetail !== ""
+                                    ? userDetail.email
+                                    : "Không có"}
+                              </p>
                            </div>
                         </div>
                      </div>
@@ -236,7 +316,7 @@ export const ShoppingCart = () => {
                            </Button>
                         </div>
 
-                        <div class="sc__info-user-discount-content">
+                        {/* <div class="sc__info-user-discount-content">
                            <p>HKJSHFGJS</p>
                            <p style={{ display: "flex", alignItems: "center" }}>
                               -12.000 đ{" "}
@@ -248,7 +328,7 @@ export const ShoppingCart = () => {
                                  }}
                               />
                            </p>
-                        </div>
+                        </div> */}
                      </div>
 
                      <div class="sc__info-user-item">
@@ -269,7 +349,7 @@ export const ShoppingCart = () => {
                                     fontWeight: "400",
                                  }}
                               >
-                                 (2 sản phẩm)
+                                 ({totalCost.count} sản phẩm)
                               </p>
                            </p>
                         </div>
@@ -277,24 +357,24 @@ export const ShoppingCart = () => {
                         <div class="sc__info-order-content">
                            <div class="sc__info-order-item">
                               <p class="sc__info-order-item-title">Tạm tính</p>
-                              <p>216.000 đ</p>
+                              <p>{formatVND(totalCost.totalPrice)}</p>
                            </div>
                            <div class="sc__info-order-item">
                               <p class="sc__info-order-item-title">
                                  Phí dịch vụ
                               </p>
-                              <p>15.000 đ</p>
+                              <p>{formatVND(totalCost.ship)}</p>
                            </div>
                            <div class="sc__info-order-item">
                               <p class="sc__info-order-item-title">Giảm giá</p>
-                              <p style={{ color: "rgb(0, 171, 86)" }}>0 đ</p>
+                              <p style={{ color: "rgb(0, 171, 86)" }}>0 VND</p>
                            </div>
                         </div>
 
                         <div class="sc__info-order-total-cost">
                            <div class="sc__info-order-item">
                               <p>Tổng tiền</p>
-                              <p>231.000 đ</p>
+                              <p>{formatVND(totalCost.total)}</p>
                            </div>
                         </div>
 
@@ -306,6 +386,7 @@ export const ShoppingCart = () => {
                               fontWeight: "600",
                               marginTop: "8px",
                            }}
+                           onClick={onPaymentOrder}
                         >
                            THANH TOÁN
                         </Button>
