@@ -24,6 +24,10 @@ import { NewsManagement } from "./Component/newsManagement/NewsManagement";
 import { News } from "./Container/news/News";
 import { NewsContent } from "./Container/newsContent/NewsContent";
 import { Homepage } from "./Container/homepage/Homepage";
+import { getAllProductInCart } from "./reduxToolkit/thunk/productThunk";
+import { OrderList } from "./Container/orderList/OrderList";
+import { LoginAdmin } from "./Component/Login/LoginAdmin";
+import { UsersManagement } from "./Component/usersManagement/UsersManagement";
 
 function App() {
    const isLoading = useSelector(loading);
@@ -37,6 +41,7 @@ function App() {
       if (token !== "" && token) {
          console.log("token", token);
          dispatch(getProfileUser(token));
+         dispatch(getAllProductInCart());
       }
    }, []);
 
@@ -78,6 +83,8 @@ function App() {
                         <Route path="" element={<News />} />
                         <Route path=":id" element={<NewsContent />} />
                      </Route>
+
+                     <Route path="order-list" element={<OrderList />}></Route>
                   </Route>
 
                   <Route path="auth" element={<Auth />}>
@@ -88,11 +95,16 @@ function App() {
                         element={<ForgotPassword />}
                      />
                   </Route>
+                  <Route path="loginAdmin" element={<LoginAdmin />} />
 
                   <Route path="admin" element={<Admin />}>
                      <Route
                         path="news-management"
                         element={<NewsManagement />}
+                     />
+                     <Route
+                        path="users-management"
+                        element={<UsersManagement />}
                      />
                   </Route>
                </Routes>

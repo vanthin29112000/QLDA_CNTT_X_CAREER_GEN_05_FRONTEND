@@ -61,3 +61,72 @@ export const getProductSpecialOffer = createAsyncThunk(
       }
    }
 );
+
+export const updateProductInCart = createAsyncThunk(
+   "products/updateProductInCart",
+
+   async (data) => {
+      // data : {id , quantity }
+      try {
+         const token = localStorage.getItem("token");
+         const res = await callAPI(`/cart-item`, "PUT", data, token);
+         return res;
+      } catch (error) {
+         return error.response.data;
+      }
+   }
+);
+
+export const addProductInCart = createAsyncThunk(
+   "products/addProductInCart",
+
+   async (data) => {
+      // data : {id , quantity }
+      try {
+         const token = localStorage.getItem("token");
+         const res = await callAPI(`/cart-item`, "POST", data, token);
+         return res;
+      } catch (error) {
+         return error.response.data;
+      }
+   }
+);
+
+export const getAllProductInCart = createAsyncThunk(
+   "products/getAllProductInCart",
+   async () => {
+      try {
+         const token = localStorage.getItem("token");
+         const res = await callAPI(`/cart-item`, "GET", {}, token);
+         return res;
+      } catch (error) {
+         return error.response.data;
+      }
+   }
+);
+
+export const deleteProductInCart = createAsyncThunk(
+   "products/deleteProductInCart",
+   async (data) => {
+      try {
+         const token = localStorage.getItem("token");
+         const res = await callAPI(`/cart-item`, "DELETE", data, token);
+         return res;
+      } catch (error) {
+         return error.response.data;
+      }
+   }
+);
+
+export const paymentOrders = createAsyncThunk(
+   "products/paymentOrders",
+   async (data) => {
+      try {
+         const token = localStorage.getItem("token");
+         const res = await callAPI(`/invoice`, "POST", data, token);
+         return res;
+      } catch (error) {
+         return error.response.data;
+      }
+   }
+);

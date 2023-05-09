@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import { message } from "antd";
 import { isError } from "../../service/callApi";
 import {
    changePasswordUser,
@@ -56,7 +55,6 @@ const userSlice = createSlice({
                   token: action.payload.data.token,
                };
             } else {
-               // console.log(action.payload.message);
                state.notification = {
                   isShow: true,
                   message: action.payload.message,
@@ -120,7 +118,8 @@ const userSlice = createSlice({
                };
             } else {
                state.notification.isShow = true;
-               state.notification.message = action.payload.message;
+               state.notification.message =
+                  action.payload.message || action.payload.data.message;
                state.notification.type = "error";
             }
          })
@@ -173,10 +172,8 @@ const userSlice = createSlice({
          .addCase(changePasswordUser.fulfilled, (state, action) => {
             state.status = "idle";
             state.isLoading = false;
-            // const token = localStorage.getItem("token");
 
             if (!isError(action.payload)) {
-               // state.infoUser = { ...action.payload.data, token };
                state.notification.message = "Chỉnh sửa thành công";
                state.notification.type = "success";
                state.notification.isShow = true;

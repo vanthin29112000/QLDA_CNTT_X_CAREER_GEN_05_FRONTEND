@@ -5,7 +5,8 @@ export const productSliderList = (state) => state.products.productSlider;
 export const productSpecialList = (state) => state.products.productSpecial;
 export const productSpecialOfferList = (state) =>
    state.products.productSpecialOffer;
-
+export const notification = (state) => state.products.notification;
+export const productInCart = (state) => state.products.productInCart;
 export const products = (state) => state.products.products;
 export const listFilter = (state) => state.products.filter;
 export const sortItem = (state) => state.products.sort;
