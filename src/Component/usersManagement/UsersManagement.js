@@ -15,7 +15,7 @@ import {
    Tag,
    Tooltip,
 } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { blockingUser, getAllUsers } from "../../reduxToolkit/thunk/staffThunk";
 import { isLoading, listUser } from "../../reduxToolkit/selector/staffSelector";
@@ -24,7 +24,6 @@ import { formatVND } from "../../service/formater";
 export const UsersManagement = () => {
    const dispatch = useDispatch();
    const loading = useSelector(isLoading);
-
    const users = useSelector(listUser);
    useEffect(() => {
       dispatch(getAllUsers());

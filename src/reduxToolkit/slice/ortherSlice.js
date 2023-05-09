@@ -1,7 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { isError } from "../../service/callApi";
 import { addNew } from "../thunk/newsThunk";
-import { getOrtherForCustomer, updateUsedVoucher } from "../thunk/ortherThunk";
+import {
+   getAllOrderForAdmin,
+   getOrtherForCustomer,
+   updateUsedVoucher,
+} from "../thunk/ortherThunk";
 
 const initialState = {
    isLoading: false,
@@ -62,6 +66,25 @@ const ortherSlice = createSlice({
             state.status = "pending";
          })
          .addCase(updateUsedVoucher.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.status = "idle";
+            if (!isError(action.payload)) {
+               state.listOrther = action.payload.data;
+
+               //    state.notification.isShow = true;
+               //    state.notification.message = "Thêm bài viết thành công !";
+               //    state.notification.type = "success";
+            } else {
+               state.notification.isShow = true;
+               state.notification.message = action.payload.message;
+               state.notification.type = "error";
+            }
+         })
+         .addCase(getAllOrderForAdmin.pending, (state, action) => {
+            state.isLoading = true;
+            state.status = "pending";
+         })
+         .addCase(getAllOrderForAdmin.fulfilled, (state, action) => {
             state.isLoading = false;
             state.status = "idle";
             if (!isError(action.payload)) {
