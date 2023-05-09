@@ -9,7 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { HandleAmount } from "../../Layout/handleAmount/HandleAmount";
 import { productDetailItem } from "../../reduxToolkit/selector/productsSelector";
-import { getProductByID } from "../../reduxToolkit/thunk/productThunk";
+import {
+   addProductInCart,
+   getProductByID,
+   updateProductInCart,
+} from "../../reduxToolkit/thunk/productThunk";
 import { formatDate, formatVND } from "../../service/formater";
 import "./ProductDetail.css";
 export const ProductDetail = () => {
@@ -35,20 +39,9 @@ export const ProductDetail = () => {
       }
    }, [productInfo]);
 
-   // const handleSlideShow = (key) => {
-   //    if (key === "up") {
-   //       if (startImg + 5 <= tempImg.length) {
-   //          setStartImg(startImg + 1);
-   //          console.log("handle");
-   //       }
-   //    }
-
-   //    if (key === "down") {
-   //       if (startImg - 1 >= 0) {
-   //          setStartImg(startImg - 1);
-   //       }
-   //    }
-   // };
+   const onAddProductInCart = (id) => {
+      dispatch(addProductInCart({ id: id, quantity: qtyProduct }));
+   };
 
    return (
       <>
@@ -167,13 +160,19 @@ export const ProductDetail = () => {
                            </p>
                            <div class="product-detail__right-amount">
                               <HandleAmount
-                                 max={productInfo.countInStock}
+                                 max={
+                                    productInfo.countInStock -
+                                    productInfo.countSold
+                                 }
                                  value={qtyProduct}
                                  setValue={setQtyProduct}
                               ></HandleAmount>
 
                               <p class="product-detail__right-qty">
-                                 ( Còn {productInfo.countInStock} voucher )
+                                 ( Còn{" "}
+                                 {productInfo.countInStock -
+                                    productInfo.countSold}{" "}
+                                 voucher )
                               </p>
                            </div>
                         </div>
@@ -188,6 +187,9 @@ export const ProductDetail = () => {
                                  color: "#d0011b",
                                  display: "flex",
                                  alignItems: "center",
+                              }}
+                              onClick={() => {
+                                 onAddProductInCart(productInfo._id);
                               }}
                            >
                               <ShoppingCartOutlined />

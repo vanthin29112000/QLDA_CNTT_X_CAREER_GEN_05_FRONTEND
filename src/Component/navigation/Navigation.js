@@ -14,14 +14,16 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { isLogin } from "../../reduxToolkit/selector/userSelector";
+import { productInCart } from "../../reduxToolkit/selector/productsSelector";
 export const Navigation = () => {
    const [scrollState, setSrcollState] = useState(false);
    const [menuState, setMenuState] = useState(false);
    const [menuMobileSate, setMenuMobileSate] = useState(false);
    const [selectNav, setSelectNav] = useState("");
+   const [countProduct, setCountProduct] = useState(0);
    const location = useLocation();
    const isAuth = useSelector(isLogin);
-
+   const products = useSelector(productInCart);
    const navigate = useNavigate();
 
    const items = [
@@ -60,6 +62,16 @@ export const Navigation = () => {
       };
    }
 
+   useEffect(() => {
+      if (products.length > 0) {
+         let count = 0;
+         products.forEach((ele) => {
+            count += ele.quantity;
+         });
+         setCountProduct(count);
+      }
+   }, [products]);
+
    const content = (
       <>
          {isAuth ? (
@@ -67,6 +79,10 @@ export const Navigation = () => {
                <a href="/accountDetail">
                   {" "}
                   <div class="popover-user">Thông tin tài khoản</div>
+               </a>
+               <a href="/order-list">
+                  {" "}
+                  <div class="popover-user">Voucher đã mua</div>
                </a>
                <a
                   href="/"
@@ -80,12 +96,12 @@ export const Navigation = () => {
          ) : (
             <div>
                <a href="/auth/login">
-                  <div class="popover-user">Login</div>
+                  <div class="popover-user">Đăng nhập</div>
                </a>
 
                <a href="/auth/register">
                   {" "}
-                  <div class="popover-user">Register</div>
+                  <div class="popover-user">Đăng kí</div>
                </a>
             </div>
          )}
@@ -204,10 +220,11 @@ export const Navigation = () => {
                         }}
                         class="navigation-menu_icon "
                      >
-                        <Badge count={5}>
+                        <Badge count={countProduct}>
                            <ShoppingOutlined style={{ fontSize: "1.2em" }} />
                         </Badge>
                      </div>
+
                      <div class="navigation-menu_icon ">
                         <Popover
                            placement="bottomRight"
