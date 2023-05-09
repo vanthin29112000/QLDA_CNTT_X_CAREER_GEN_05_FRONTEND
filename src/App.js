@@ -28,7 +28,7 @@ import { getAllProductInCart } from "./reduxToolkit/thunk/productThunk";
 import { OrderList } from "./Container/orderList/OrderList";
 import { LoginAdmin } from "./Component/Login/LoginAdmin";
 import { UsersManagement } from "./Component/usersManagement/UsersManagement";
-
+import { OrderManagement } from "./Component/orderManagement/OrderManagement";
 function App() {
    const isLoading = useSelector(loading);
    const notify = useSelector(notification);
@@ -105,6 +105,10 @@ function App() {
                      <Route
                         path="users-management"
                         element={<UsersManagement />}
+                     />
+                     <Route
+                        path="orders-management"
+                        element={<OrderManagement />}
                      />
                   </Route>
                </Routes>

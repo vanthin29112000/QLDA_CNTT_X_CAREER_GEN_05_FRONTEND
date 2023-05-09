@@ -26,3 +26,16 @@ export const updateUsedVoucher = createAsyncThunk(
       }
    }
 );
+
+export const getAllOrderForAdmin = createAsyncThunk(
+   "invoice/getAllOrderForAdmin",
+   async () => {
+      try {
+         const token = localStorage.getItem("tokenAdmin");
+         const res = await callAPI("/invoice/all", "GET", {}, token);
+         return res;
+      } catch (error) {
+         return error.response.data;
+      }
+   }
+);
