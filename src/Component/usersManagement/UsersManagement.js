@@ -4,10 +4,11 @@ import {
    LockOutlined,
    PlusCircleOutlined,
    RollbackOutlined,
+   SearchOutlined,
 } from "@ant-design/icons";
 import {
    Button,
-   Modal,
+   Input,
    Popconfirm,
    Space,
    Spin,
@@ -15,17 +16,116 @@ import {
    Tag,
    Tooltip,
 } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { blockingUser, getAllUsers } from "../../reduxToolkit/thunk/staffThunk";
 import { isLoading, listUser } from "../../reduxToolkit/selector/staffSelector";
 import { formatVND } from "../../service/formater";
+import Highlighter from "react-highlight-words";
 
 export const UsersManagement = () => {
    const dispatch = useDispatch();
    const loading = useSelector(isLoading);
-
    const users = useSelector(listUser);
+
+   const [searchText, setSearchText] = useState("");
+   const [searchedColumn, setSearchedColumn] = useState("");
+   const searchInput = useRef(null);
+   const handleSearch = (selectedKeys, confirm, dataIndex) => {
+      confirm();
+      setSearchText(selectedKeys[0]);
+      setSearchedColumn(dataIndex);
+   };
+   const handleReset = (clearFilters) => {
+      clearFilters();
+      setSearchText("");
+   };
+   const getColumnSearchProps = (dataIndex) => ({
+      filterDropdown: ({
+         setSelectedKeys,
+         selectedKeys,
+         confirm,
+         clearFilters,
+         close,
+      }) => (
+         <div
+            style={{
+               padding: 8,
+            }}
+            onKeyDown={(e) => e.stopPropagation()}
+         >
+            <Input
+               ref={searchInput}
+               placeholder={`Tìm kiếm`}
+               value={selectedKeys[0]}
+               onChange={(e) =>
+                  setSelectedKeys(e.target.value ? [e.target.value] : [])
+               }
+               onPressEnter={() =>
+                  handleSearch(selectedKeys, confirm, dataIndex)
+               }
+               style={{
+                  marginBottom: 8,
+                  display: "block",
+               }}
+            />
+            <Space>
+               <Button
+                  type="primary"
+                  onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                  icon={<SearchOutlined />}
+                  size="small"
+                  style={{
+                     width: 90,
+                  }}
+               >
+                  Tìm
+               </Button>
+               <Button
+                  onClick={() => clearFilters && handleReset(clearFilters)}
+                  size="small"
+                  style={{
+                     width: 90,
+                  }}
+               >
+                  Đặt lại
+               </Button>
+            </Space>
+         </div>
+      ),
+      filterIcon: (filtered) => (
+         <SearchOutlined
+            style={{
+               color: filtered ? "#1890ff" : undefined,
+            }}
+         />
+      ),
+      onFilter: (value, record) =>
+         record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase()),
+      onFilterDropdownOpenChange: (visible) => {
+         if (visible) {
+            setTimeout(() => searchInput.current?.select(), 100);
+         }
+      },
+      render: (text) =>
+         searchedColumn === dataIndex ? (
+            <Highlighter
+               highlightStyle={{
+                  backgroundColor: "#ffc069",
+                  padding: 0,
+               }}
+               searchWords={[searchText]}
+               autoEscape
+               textToHighlight={text ? text.toString() : ""}
+            />
+         ) : (
+            text
+         ),
+   });
+
    useEffect(() => {
       dispatch(getAllUsers());
    }, []);
@@ -46,6 +146,7 @@ export const UsersManagement = () => {
       {
          title: "Họ và tên",
          dataIndex: "name",
+         ...getColumnSearchProps("name"),
       },
       {
          title: "Email",
@@ -54,6 +155,7 @@ export const UsersManagement = () => {
          render: (text) => (
             <p style={{ fontWeight: "600", maxWidth: "400px" }}>{text}</p>
          ),
+         ...getColumnSearchProps("email"),
       },
       {
          title: "Số điện thoại",
@@ -64,6 +166,7 @@ export const UsersManagement = () => {
                {text ? text : "Không có"}
             </p>
          ),
+         ...getColumnSearchProps("phone"),
       },
 
       {
@@ -85,6 +188,7 @@ export const UsersManagement = () => {
             <p style={{ fontWeight: "600", maxWidth: "400px" }}>{text}</p>
          ),
          sorter: (a, b) => a.qtyPurchased - b.qtyPurchased,
+         sortDirections: ["descend", "ascend"],
       },
 
       {
@@ -104,7 +208,7 @@ export const UsersManagement = () => {
 
                case true: {
                   color = "volcano";
-                  title = "Đã xóa";
+                  title = "Đã khóa";
                   break;
                }
 
@@ -120,7 +224,7 @@ export const UsersManagement = () => {
          },
          filters: [
             { text: "Hoạt động", value: false },
-            { text: "Đã xóa", value: true },
+            { text: "Đã khóa", value: true },
          ],
          onFilter: (value, record) => {
             console.log("hello", record.block.isBLocking, value);
@@ -212,6 +316,7 @@ export const UsersManagement = () => {
          },
       },
    ];
+
    const data = users;
 
    return (
@@ -225,31 +330,6 @@ export const UsersManagement = () => {
                   <p style={{ fontWeight: "500", margin: "0" }}>
                      Danh sách người dùng
                   </p>
-                  {/* <div class="ai__filter-item">
-                     <Button
-                        type="primary"
-                        style={{
-                           marginRight: "8px",
-                           display: "flex",
-                           alignItems: "center",
-                        }}
-                        icon={<PlusCircleOutlined />}
-                        onClick={() => {
-                           // setOpenAdd(true);
-                        }}
-                     >
-                        Thêm tin tức mới
-                     </Button>
-                     <Button
-                        icon={<FilterOutlined />}
-                        style={{ display: "flex", alignItems: "center" }}
-                        onClick={() => {
-                           // setOpenFilter(true);
-                        }}
-                     >
-                        Lọc & Sắp xếp
-                     </Button>
-                  </div> */}
                </div>
 
                <div class="admin-item__list-news">
@@ -261,14 +341,7 @@ export const UsersManagement = () => {
                      style={{ textAlign: "center" }}
                      pagination={{ position: ["bottomCenter "], pageSize: 5 }}
                   />
-                  {/* <Table
-                  columns={columns}
-                  dataSource={listNew}
-                  style={{ textAlign: "center" }}
-                  pagination={{
-                     position: ["none", "none"],
-                  }}
-               /> */}
+
                   <div
                      style={{
                         width: "100%",
@@ -276,16 +349,7 @@ export const UsersManagement = () => {
                         justifyContent: "center",
                         marginTop: "8px",
                      }}
-                  >
-                     {/* {news.length > 0 && (
-                     <Pagination
-                        total={news.length}
-                        defaultCurrent={1}
-                        pageSize={countSize}
-                        onChange={onHandlePagination}
-                     />
-                  )} */}
-                  </div>
+                  ></div>
                </div>
             </div>
          </div>

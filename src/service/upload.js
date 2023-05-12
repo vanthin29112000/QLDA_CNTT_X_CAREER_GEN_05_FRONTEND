@@ -1,4 +1,5 @@
 import { async } from "@firebase/util";
+import { message } from "antd";
 import {
    getStorage,
    ref,
@@ -45,6 +46,7 @@ export const uploadFirebase = (file, folder) => {
          (snapshot) => {
             const progress =
                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            message.warning("Đang tải hình lên " + progress.toFixed(0) + "%");
             console.log("Upload is " + progress + "% done");
             switch (snapshot.state) {
                case "paused":
@@ -64,6 +66,7 @@ export const uploadFirebase = (file, folder) => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                resolve(downloadURL);
             });
+            message.success("Tải hình lên thành công !");
          }
       );
    });

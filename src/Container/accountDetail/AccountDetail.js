@@ -241,9 +241,19 @@ export const AccountDetail = () => {
                                                    "Vui lòng nhập số điện thoại!",
                                              },
                                              {
-                                                type: Number,
-                                                message:
-                                                   "Vui lòng nhập đúng định dạng !",
+                                                validator: (_, value) => {
+                                                   if (
+                                                      !value ||
+                                                      /^[0-9\+]*$/.test(value)
+                                                   ) {
+                                                      return Promise.resolve();
+                                                   }
+                                                   return Promise.reject(
+                                                      new Error(
+                                                         "Vui lòng nhập đúng định dạng số"
+                                                      )
+                                                   );
+                                                },
                                              },
                                              {
                                                 min: 10,

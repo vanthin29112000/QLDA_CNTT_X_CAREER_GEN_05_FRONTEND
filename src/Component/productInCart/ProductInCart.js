@@ -20,7 +20,12 @@ export const ProductInCart = ({ productItem }) => {
    }, [qty]);
 
    return (
-      <div class="shopping-cart__product-content">
+      <div
+         class="shopping-cart__product-content"
+         style={{
+            opacity: `${productItem.infoProduct.deleteInfo.isDelete ? 0.5 : 1}`,
+         }}
+      >
          <div class="row g-0 text-center align-items-center">
             <div class="col-4">
                <div class="sc__product-detail">
@@ -68,6 +73,7 @@ export const ProductInCart = ({ productItem }) => {
                      min={1}
                      value={qty}
                      setValue={setQty}
+                     disabled={productItem.infoProduct.deleteInfo.isDelete}
                   ></HandleAmount>
                   <p class="sc__qty-in-stock">
                      ( Còn{" "}

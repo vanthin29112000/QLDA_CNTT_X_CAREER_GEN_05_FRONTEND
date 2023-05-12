@@ -64,7 +64,8 @@
 }
 
 .mess-item__content{
-    width: fit-content;
+    max-width: 150px;
+    word-wrap: break-word;
     height: fit-content;
     margin: 0px 8px;
     margin-top: 4px;

@@ -5,12 +5,13 @@
 .button-animation {
     width: fit-content;
     height: 64px;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     color: white;
     display: flex;
     align-items: center;
+    z-index: 2;
 }
 
 .btn-show-menu {

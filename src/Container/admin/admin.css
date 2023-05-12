@@ -13,7 +13,7 @@
 
 .admin__content{
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     background-color: #e5e9eb;
     padding: 16px 0px;
 }
@@ -171,6 +171,7 @@
 .chat-box-admin__list-user-mess{
     font-size: 0.8em;
     color: #767676;
+    width: 100px;
     margin: 0;
     overflow: hidden;
     text-overflow: ellipsis;

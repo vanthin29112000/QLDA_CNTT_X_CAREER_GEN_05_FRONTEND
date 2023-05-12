@@ -3,6 +3,8 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { formatDate, formatVND } from "../../service/formater";
 import { useDispatch } from "react-redux";
+import parse from "html-react-parser";
+
 import {
    addProductInCart,
    updateProductInCart,
@@ -45,12 +47,8 @@ export const Product = ({ product }) => {
             </div>
             <div class="product-content">
                <div class="product-content__item">
-                  <p>
-                     <strong class="product-content__item-title">
-                        Mô tả :
-                     </strong>{" "}
-                     {product.desc}
-                  </p>
+                  <strong class="product-content__item-title">Mô tả :</strong>{" "}
+                  {parse(product.desc)}
                </div>
                <div class="product-content__item">
                   <p>
@@ -58,7 +56,7 @@ export const Product = ({ product }) => {
                      <strong class="product-content__item-title">
                         Ngành hàng :
                      </strong>
-                     {product.category}
+                     {product.category.join(", ")}
                   </p>
                </div>
             </div>

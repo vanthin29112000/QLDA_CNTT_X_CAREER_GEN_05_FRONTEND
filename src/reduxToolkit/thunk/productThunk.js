@@ -26,6 +26,19 @@ export const getProductByID = createAsyncThunk(
    }
 );
 
+export const getProductForAdminByID = createAsyncThunk(
+   "products/getProductForAdminByID",
+   async (id) => {
+      try {
+         const token = localStorage.getItem("tokenAdmin");
+         const res = await callAPI(`/product/admin/${id}`, "GET", {}, token);
+         return res;
+      } catch (error) {
+         return error.response.data;
+      }
+   }
+);
+
 export const getProductSlider = createAsyncThunk(
    "products/getProductSlider",
    async () => {
@@ -124,6 +137,71 @@ export const paymentOrders = createAsyncThunk(
       try {
          const token = localStorage.getItem("token");
          const res = await callAPI(`/invoice`, "POST", data, token);
+         return res;
+      } catch (error) {
+         return error.response.data;
+      }
+   }
+);
+
+export const updateSpecialProduct = createAsyncThunk(
+   "products/updateSpecialProduct",
+   async ({ id }) => {
+      try {
+         const token = localStorage.getItem("tokenAdmin");
+         const res = await callAPI(`/product/special/${id}`, "PUT", {}, token);
+         return res;
+      } catch (error) {
+         return error.response.data;
+      }
+   }
+);
+
+export const updateSliderProduct = createAsyncThunk(
+   "products/updateSliderProduct",
+   async ({ id }) => {
+      try {
+         const token = localStorage.getItem("tokenAdmin");
+         const res = await callAPI(`/product/slider/${id}`, "PUT", {}, token);
+         return res;
+      } catch (error) {
+         return error.response.data;
+      }
+   }
+);
+
+export const createNewProduct = createAsyncThunk(
+   "products/createNewProduct",
+   async (data) => {
+      try {
+         const token = localStorage.getItem("tokenAdmin");
+         const res = await callAPI(`/product`, "POST", data, token);
+         return res;
+      } catch (error) {
+         return error.response.data;
+      }
+   }
+);
+
+export const updateProduct = createAsyncThunk(
+   "products/updateProduct",
+   async (data) => {
+      try {
+         const token = localStorage.getItem("tokenAdmin");
+         const res = await callAPI(`/product/${data.id}`, "PUT", data, token);
+         return res;
+      } catch (error) {
+         return error.response.data;
+      }
+   }
+);
+
+export const deleteProduct = createAsyncThunk(
+   "products/deleteProduct",
+   async (id) => {
+      try {
+         const token = localStorage.getItem("tokenAdmin");
+         const res = await callAPI(`/product/${id}`, "DELETE", {}, token);
          return res;
       } catch (error) {
          return error.response.data;
