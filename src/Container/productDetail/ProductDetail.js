@@ -6,7 +6,9 @@ import {
 import { Button, Carousel, InputNumber, Tabs } from "antd";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+import parse from "html-react-parser";
+
 import { HandleAmount } from "../../Layout/handleAmount/HandleAmount";
 import { productDetailItem } from "../../reduxToolkit/selector/productsSelector";
 import {
@@ -20,7 +22,7 @@ export const ProductDetail = () => {
    const params = useParams();
    const dispatch = useDispatch();
    const productInfo = useSelector(productDetailItem);
-
+   const navigate = useNavigate();
    const [qtyProduct, setQtyProduct] = useState(1);
    const [imgActive, setImgActive] = useState(0);
    const [tempImg, setTempImg] = useState([]);
@@ -146,70 +148,83 @@ export const ProductDetail = () => {
                         </div>
 
                         <div class="product-detail__right-content-bg">
-                           <p class="">{productInfo.desc}</p>
+                           <p class="">{parse(productInfo.desc)}</p>
                            <p class="product-detail__right-timeline">
                               Voucher áp dụng :{" "}
                               {formatDate(productInfo.effectiveDate)} -{" "}
                               {formatDate(productInfo.expirationDate)}
                            </p>
                         </div>
+                        {productInfo.countInStock - productInfo.countSold !==
+                        0 ? (
+                           <>
+                              <div class="product-detail__right-amount-bg">
+                                 <p class="product-detail__right-amount-title">
+                                    Số lượng
+                                 </p>
+                                 <div class="product-detail__right-amount">
+                                    <HandleAmount
+                                       max={
+                                          productInfo.countInStock -
+                                          productInfo.countSold
+                                       }
+                                       value={qtyProduct}
+                                       setValue={setQtyProduct}
+                                    ></HandleAmount>
 
-                        <div class="product-detail__right-amount-bg">
-                           <p class="product-detail__right-amount-title">
-                              Số lượng
-                           </p>
-                           <div class="product-detail__right-amount">
-                              <HandleAmount
-                                 max={
-                                    productInfo.countInStock -
-                                    productInfo.countSold
-                                 }
-                                 value={qtyProduct}
-                                 setValue={setQtyProduct}
-                              ></HandleAmount>
+                                    <p class="product-detail__right-qty">
+                                       ( Còn{" "}
+                                       {productInfo.countInStock -
+                                          productInfo.countSold}{" "}
+                                       voucher )
+                                    </p>
+                                 </div>
+                              </div>
 
-                              <p class="product-detail__right-qty">
-                                 ( Còn{" "}
-                                 {productInfo.countInStock -
-                                    productInfo.countSold}{" "}
-                                 voucher )
-                              </p>
-                           </div>
-                        </div>
-
-                        <div class="product-detail__right-button">
-                           <Button
-                              type="primary"
-                              danger
-                              style={{
-                                 height: "48px",
-                                 backgroundColor: "rgba(241,180,187,.1628)",
-                                 color: "#d0011b",
-                                 display: "flex",
-                                 alignItems: "center",
-                              }}
-                              onClick={() => {
-                                 onAddProductInCart(productInfo._id);
-                              }}
-                           >
-                              <ShoppingCartOutlined />
-                              Thêm vào giỏ hàng
-                           </Button>
-                           <Button
-                              type="primary"
-                              danger
-                              style={{
-                                 height: "48px",
-                                 // backgroundColor: "rgba(241,180,187,.1628)",
-                                 // color: "#d0011b",
-                                 display: "flex",
-                                 alignItems: "center",
-                                 margin: "0px 8px",
-                              }}
-                           >
-                              Mua ngay
-                           </Button>
-                        </div>
+                              <div class="product-detail__right-button">
+                                 <Button
+                                    type="primary"
+                                    danger
+                                    style={{
+                                       height: "48px",
+                                       backgroundColor:
+                                          "rgba(241,180,187,.1628)",
+                                       color: "#d0011b",
+                                       display: "flex",
+                                       alignItems: "center",
+                                    }}
+                                    onClick={() => {
+                                       onAddProductInCart(productInfo._id);
+                                    }}
+                                 >
+                                    <ShoppingCartOutlined />
+                                    Thêm vào giỏ hàng
+                                 </Button>
+                                 <Button
+                                    type="primary"
+                                    danger
+                                    style={{
+                                       height: "48px",
+                                       // backgroundColor: "rgba(241,180,187,.1628)",
+                                       // color: "#d0011b",
+                                       display: "flex",
+                                       alignItems: "center",
+                                       margin: "0px 8px",
+                                    }}
+                                    onClick={() => {
+                                       onAddProductInCart(productInfo._id);
+                                       navigate("/cart");
+                                    }}
+                                 >
+                                    Mua ngay
+                                 </Button>
+                              </div>
+                           </>
+                        ) : (
+                           <h3 style={{ color: "red", padding: "16px" }}>
+                              Hết hàng
+                           </h3>
+                        )}
                      </div>
                   </div>
 
@@ -223,14 +238,14 @@ export const ProductDetail = () => {
                            key="1"
                            style={{ fontWeight: "400" }}
                         >
-                           Content of Tab Pane 1
+                           {parse(productInfo.userManual)}
                         </Tabs.TabPane>
                         <Tabs.TabPane
                            tab="Điều khoản & điều kiện"
                            key="2"
                            style={{ fontWeight: "400" }}
                         >
-                           Content of Tab Pane 2
+                           {parse(productInfo.rules)}
                         </Tabs.TabPane>
                      </Tabs>
                   </div>

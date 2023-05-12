@@ -63,9 +63,11 @@ export const ShoppingCart = () => {
          total: 0,
       };
       productsList.forEach((ele) => {
-         temp.count += ele.quantity;
-         temp.totalPrice += ele.quantity * ele.infoProduct.price;
-         temp.total = temp.totalPrice + temp.ship;
+         if (!ele.infoProduct.deleteInfo.isDelete) {
+            temp.count += ele.quantity;
+            temp.totalPrice += ele.quantity * ele.infoProduct.price;
+            temp.total = temp.totalPrice + temp.ship;
+         }
       });
       temp.ship = 15000;
 

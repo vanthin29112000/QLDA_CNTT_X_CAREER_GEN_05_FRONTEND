@@ -47,11 +47,18 @@ export const MenuAdmin = () => {
    useEffect(() => {
       const path = location.pathname.split("/")[2];
       switch (path) {
+         case "": {
+            setKey("1");
+            break;
+         }
          case "orders-management": {
             setKey("2");
             break;
          }
-
+         case "products-management": {
+            setKey("3");
+            break;
+         }
          case "users-management": {
             setKey("4");
             break;
@@ -86,9 +93,19 @@ export const MenuAdmin = () => {
    const onChangeClick = (item) => {
       const { key } = item;
       switch (key) {
+         case "1": {
+            setKey("1");
+            naviagte("/admin");
+            break;
+         }
          case "2": {
-            setKey("3");
+            setKey("2");
             naviagte("/admin/orders-management");
+            break;
+         }
+         case "3": {
+            setKey("3");
+            naviagte("/admin/products-management");
             break;
          }
          case "4": {

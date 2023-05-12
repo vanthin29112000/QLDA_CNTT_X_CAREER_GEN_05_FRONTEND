@@ -115,8 +115,16 @@ export const Register = () => {
                                  message: "Vui lòng nhập số điện thoại !",
                               },
                               {
-                                 type: Number,
-                                 message: "Số điện thoại không đúng !",
+                                 validator: (_, value) => {
+                                    if (!value || /^[0-9\+]*$/.test(value)) {
+                                       return Promise.resolve();
+                                    }
+                                    return Promise.reject(
+                                       new Error(
+                                          "Vui lòng nhập đúng định dạng số"
+                                       )
+                                    );
+                                 },
                               },
                               {
                                  min: 10,

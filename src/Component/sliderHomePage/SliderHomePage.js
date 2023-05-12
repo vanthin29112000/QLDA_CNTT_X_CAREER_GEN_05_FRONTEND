@@ -6,13 +6,13 @@ import { useSelector } from "react-redux";
 import { productSliderList } from "../../reduxToolkit/selector/productsSelector";
 import { formatDate } from "../../service/formater";
 import { useNavigate } from "react-router-dom";
+import parse from "html-react-parser";
+
 export const SliderHomePage = () => {
    const [sliderIndex, setSliderIndex] = useState(0);
    const refSlider = useRef();
    const navigate = useNavigate();
    const products = useSelector(productSliderList);
-
-   const tempArr = [1, 2, 3, 4, 5];
 
    const onNextSlider = () => {
       if (sliderIndex < 4) {
@@ -58,7 +58,7 @@ export const SliderHomePage = () => {
                                     <h1 class="homepage-product__name">
                                        {ele.name}
                                     </h1>
-                                    <p>{ele.desc}</p>
+                                    <p>{parse(ele.desc)}</p>
                                     <div class="homepage-product__info">
                                        <span style={{ fontWeight: "600" }}>
                                           Ngành hàng áp dụng:{" "}
@@ -100,8 +100,8 @@ export const SliderHomePage = () => {
                   <UpOutlined />
                </div>
                <div class="homepage-carousel__dot-item">
-                  {tempArr.length > 0 &&
-                     tempArr.map((ele, index) =>
+                  {products.length > 0 &&
+                     products.map((ele, index) =>
                         index === sliderIndex ? (
                            <div
                               class="carousel__dot-style carousel__dot-active"

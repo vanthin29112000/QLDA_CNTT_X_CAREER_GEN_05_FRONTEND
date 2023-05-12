@@ -2,6 +2,13 @@ export const formatVND = (value) => {
    return value.toLocaleString("it-IT", { style: "currency", currency: "VND" });
 };
 
+export const formatCurrency = (value) => {
+   console.log(
+      "hello",
+      value.toLocaleString("it-IT", { style: "currency", currency: "VND" })
+   );
+};
+
 export const formatDate = (date) => {
    let tempDate = new Date(date);
 

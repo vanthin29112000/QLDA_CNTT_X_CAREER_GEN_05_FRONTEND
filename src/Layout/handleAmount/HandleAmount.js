@@ -1,7 +1,7 @@
 import { Button, InputNumber } from "antd";
 import React from "react";
 
-export const HandleAmount = ({ max, value, setValue }) => {
+export const HandleAmount = ({ max, value, setValue, disabled }) => {
    const handleQtyProduct = (key) => {
       switch (key) {
          case 0: {
@@ -38,54 +38,85 @@ export const HandleAmount = ({ max, value, setValue }) => {
    };
 
    return (
-      <div style={{ display: "flex", alignItem: "center" }}>
-         {value > 1 ? (
-            <Button
-               class="product-detail__right-amount-button"
-               onClick={() => {
-                  handleQtyProduct(0);
-               }}
-            >
-               {" "}
-               -{" "}
-            </Button>
+      <>
+         {disabled ? (
+            <div style={{ display: "flex", alignItem: "center" }}>
+               <Button class="product-detail__right-amount-button" disabled>
+                  {" "}
+                  -{" "}
+               </Button>
+               <InputNumber
+                  controls={false}
+                  max={max}
+                  value={value}
+                  onChange={onChangeValue}
+                  style={{
+                     height: "32px",
+                     width: "50px",
+                     borderLeft: "none",
+                     borderRight: "none",
+                     textAlignLast: "center",
+                     fontSize: "1.2em",
+                  }}
+                  disabled={disabled}
+               />
+               <Button class="product-detail__right-amount-button" disabled>
+                  {" "}
+                  +{" "}
+               </Button>
+            </div>
          ) : (
-            <Button class="product-detail__right-amount-button" disabled>
-               {" "}
-               -{" "}
-            </Button>
-         )}
+            <div style={{ display: "flex", alignItem: "center" }}>
+               {value > 1 ? (
+                  <Button
+                     class="product-detail__right-amount-button"
+                     onClick={() => {
+                        handleQtyProduct(0);
+                     }}
+                  >
+                     {" "}
+                     -{" "}
+                  </Button>
+               ) : (
+                  <Button class="product-detail__right-amount-button" disabled>
+                     {" "}
+                     -{" "}
+                  </Button>
+               )}
 
-         <InputNumber
-            controls={false}
-            max={max}
-            value={value}
-            onChange={onChangeValue}
-            style={{
-               height: "32px",
-               width: "50px",
-               borderLeft: "none",
-               borderRight: "none",
-               textAlignLast: "center",
-               fontSize: "1.2em",
-            }}
-         />
-         {value < max ? (
-            <Button
-               class="product-detail__right-amount-button"
-               onClick={() => {
-                  handleQtyProduct(1);
-               }}
-            >
-               {" "}
-               +{" "}
-            </Button>
-         ) : (
-            <Button class="product-detail__right-amount-button" disabled>
-               {" "}
-               +{" "}
-            </Button>
+               <InputNumber
+                  controls={false}
+                  max={max}
+                  value={value}
+                  onChange={onChangeValue}
+                  style={{
+                     height: "32px",
+                     width: "50px",
+                     borderLeft: "none",
+                     borderRight: "none",
+                     textAlignLast: "center",
+                     fontSize: "1.2em",
+                  }}
+                  disabled={disabled}
+               />
+               {value < max ? (
+                  <Button
+                     class="product-detail__right-amount-button"
+                     onClick={() => {
+                        handleQtyProduct(1);
+                     }}
+                  >
+                     {" "}
+                     +{" "}
+                  </Button>
+               ) : (
+                  <Button class="product-detail__right-amount-button" disabled>
+                     {" "}
+                     +{" "}
+                  </Button>
+               )}
+            </div>
          )}
-      </div>
+      </>
    );
 };

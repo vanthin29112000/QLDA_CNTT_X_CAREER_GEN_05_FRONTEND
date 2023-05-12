@@ -1,0 +1,47 @@
+.handle-product{
+    width: 100%;
+    height: fit-content;
+    padding-bottom: 48px;
+
+}
+
+.handle-product__container{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+}
+
+
+.handle-product__left,
+.handle-product__right{
+    width: 100%;
+    height: fit-content;
+    
+}
+
+.handle-product__left{
+    padding-right: 16px;
+}
+
+
+.handle-product__right{
+    padding-left: 16px;
+}
+
+.handle-product__title{
+    color : #9b9b9b;
+    font-size: 1em;
+    font-weight: 600;
+    margin: 8px 0px;
+}
+
+.handle-product__submit{
+    /* height : 32px; */
+    width: 800px;
+    background-color: white;
+    position: fixed;
+    padding: 16px 24px;
+    bottom: 0;
+    right: 0;
+    border-top: 1px solid #f0f0f0;
+}

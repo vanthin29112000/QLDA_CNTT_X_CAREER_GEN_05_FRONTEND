@@ -1,29 +1,118 @@
-import {
-   Badge,
-   Button,
-   Popconfirm,
-   Space,
-   Spin,
-   Table,
-   Tag,
-   Tooltip,
-} from "antd";
-import React, { useEffect, useState } from "react";
+import { Button, Input, Space, Spin, Table } from "antd";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
    isLoading,
    listOrther,
 } from "../../reduxToolkit/selector/ortherSelector";
 import { formatDate, formatVND } from "../../service/formater";
-import { LockOutlined, RollbackOutlined } from "@ant-design/icons";
 import { getAllOrderForAdmin } from "../../reduxToolkit/thunk/ortherThunk";
-import { HandleSearchDataTable } from "../../Layout/handleSearchDataTable/HandleSearchDataTable";
+import { SearchOutlined } from "@ant-design/icons";
 
+import Highlighter from "react-highlight-words";
 export const OrderManagement = () => {
    const loading = useSelector(isLoading);
    const dispatch = useDispatch();
    const listOrder = useSelector(listOrther);
    const [data, setData] = useState();
+
+   const [searchText, setSearchText] = useState("");
+   const [searchedColumn, setSearchedColumn] = useState("");
+   const searchInput = useRef(null);
+   const handleSearch = (selectedKeys, confirm, dataIndex) => {
+      confirm();
+      setSearchText(selectedKeys[0]);
+      setSearchedColumn(dataIndex);
+   };
+   const handleReset = (clearFilters) => {
+      clearFilters();
+      setSearchText("");
+   };
+   const getColumnSearchProps = (dataIndex) => ({
+      filterDropdown: ({
+         setSelectedKeys,
+         selectedKeys,
+         confirm,
+         clearFilters,
+         close,
+      }) => (
+         <div
+            style={{
+               padding: 8,
+            }}
+            onKeyDown={(e) => e.stopPropagation()}
+         >
+            <Input
+               ref={searchInput}
+               placeholder={`Tìm kiếm`}
+               value={selectedKeys[0]}
+               onChange={(e) =>
+                  setSelectedKeys(e.target.value ? [e.target.value] : [])
+               }
+               onPressEnter={() =>
+                  handleSearch(selectedKeys, confirm, dataIndex)
+               }
+               style={{
+                  marginBottom: 8,
+                  display: "block",
+               }}
+            />
+            <Space>
+               <Button
+                  type="primary"
+                  onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                  icon={<SearchOutlined />}
+                  size="small"
+                  style={{
+                     width: 90,
+                  }}
+               >
+                  Tìm
+               </Button>
+               <Button
+                  onClick={() => clearFilters && handleReset(clearFilters)}
+                  size="small"
+                  style={{
+                     width: 90,
+                  }}
+               >
+                  Đặt lại
+               </Button>
+            </Space>
+         </div>
+      ),
+      filterIcon: (filtered) => (
+         <SearchOutlined
+            style={{
+               color: filtered ? "#1890ff" : undefined,
+            }}
+         />
+      ),
+      onFilter: (value, record) =>
+         record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase()),
+      onFilterDropdownOpenChange: (visible) => {
+         if (visible) {
+            setTimeout(() => searchInput.current?.select(), 100);
+         }
+      },
+      render: (text) =>
+         searchedColumn === dataIndex ? (
+            <Highlighter
+               highlightStyle={{
+                  backgroundColor: "#ffc069",
+                  padding: 0,
+               }}
+               searchWords={[searchText]}
+               autoEscape
+               textToHighlight={text ? text.toString() : ""}
+            />
+         ) : (
+            text
+         ),
+   });
 
    useEffect(() => {
       dispatch(getAllOrderForAdmin());
@@ -173,7 +262,6 @@ export const OrderManagement = () => {
       console.log("item", item.orderItems.length);
       return (
          <>
-            <HandleSearchDataTable></HandleSearchDataTable>
             <h6>Thông tin người đặt</h6>
             <Table
                columns={columnUser}
@@ -227,12 +315,13 @@ export const OrderManagement = () => {
       {
          title: "Mã đơn hàng",
          dataIndex: "_id",
-         ket: "id",
+         key: "id",
          render: (text) => (
             <p style={{ fontWeight: "600", maxWidth: "400px", margin: 0 }}>
                #{text}
             </p>
          ),
+         ...getColumnSearchProps("_id"),
       },
       {
          title: "Ngày đặt hàng",
@@ -243,6 +332,7 @@ export const OrderManagement = () => {
                {formatDate(text)}
             </p>
          ),
+         sorter: (a, b) => a.createdAt - b.createdAt,
       },
       {
          title: "Email",
@@ -253,6 +343,7 @@ export const OrderManagement = () => {
                {text}
             </p>
          ),
+         ...getColumnSearchProps("email"),
       },
       {
          title: "Số lượng voucher",
@@ -287,7 +378,7 @@ export const OrderManagement = () => {
                {formatVND(text)}
             </p>
          ),
-         sorter: (a, b) => a.totalCost - b.totalCost,
+         sorter: (a, b) => a.totalMoney - b.totalMoney,
       },
 
       {
@@ -362,18 +453,10 @@ export const OrderManagement = () => {
                         expandedRowRender,
                         defaultExpandedRowKeys: ["0"],
                      }}
-                     // onChange={onChange}
+                     pagination={{ position: ["bottomCenter "], pageSize: 3 }}
                      style={{ textAlign: "center" }}
-                     pagination={{ position: ["bottomCenter "], pageSize: 5 }}
                   />
-                  {/* <Table
-                  columns={columns}
-                  dataSource={listNew}
-                  style={{ textAlign: "center" }}
-                  pagination={{
-                     position: ["none", "none"],
-                  }}
-               /> */}
+
                   <div
                      style={{
                         width: "100%",
@@ -381,16 +464,7 @@ export const OrderManagement = () => {
                         justifyContent: "center",
                         marginTop: "8px",
                      }}
-                  >
-                     {/* {news.length > 0 && (
-                     <Pagination
-                        total={news.length}
-                        defaultCurrent={1}
-                        pageSize={countSize}
-                        onChange={onHandlePagination}
-                     />
-                  )} */}
-                  </div>
+                  ></div>
                </div>
             </div>
          </div>

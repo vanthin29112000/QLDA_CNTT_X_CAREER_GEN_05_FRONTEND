@@ -171,6 +171,7 @@
 .chat-box-admin__list-user-mess{
     font-size: 0.8em;
     color: #767676;
+    width: 100px;
     margin: 0;
     overflow: hidden;
     text-overflow: ellipsis;

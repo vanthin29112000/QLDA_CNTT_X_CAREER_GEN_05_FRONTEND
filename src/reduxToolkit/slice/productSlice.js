@@ -2,15 +2,21 @@ import { createSlice } from "@reduxjs/toolkit";
 import { isError } from "../../service/callApi";
 import {
    addProductInCart,
+   createNewProduct,
+   deleteProduct,
    deleteProductInCart,
    getAllProductInCart,
    getAllProducts,
    getProductByID,
+   getProductForAdminByID,
    getProductSlider,
    getProductSpecial,
    getProductSpecialOffer,
    paymentOrders,
+   updateProduct,
    updateProductInCart,
+   updateSliderProduct,
+   updateSpecialProduct,
 } from "../thunk/productThunk";
 
 const initialState = {
@@ -39,6 +45,7 @@ const initialState = {
    productSpecial: [],
    productSpecialOffer: [],
    productInCart: [],
+   productEdit: "",
 };
 
 const productsSlice = createSlice({
@@ -102,6 +109,66 @@ const productsSlice = createSlice({
             // console.log(action.payload);
             if (!isError(action.payload)) {
                state.productDetail = action.payload.data;
+               // state.productEdit = action.payload.data;
+            } else {
+               state.notification.isShow = true;
+               state.notification.message = action.payload.message;
+               state.notification.type = "error";
+            }
+         })
+         .addCase(getProductForAdminByID.pending, (state, action) => {
+            state.isLoading = true;
+            state.status = "pending";
+         })
+         .addCase(getProductForAdminByID.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.status = "idle";
+            // console.log(action.payload);
+            if (!isError(action.payload)) {
+               // state.productDetail = action.payload.data;
+               state.productEdit = action.payload.data;
+            } else {
+               state.notification.isShow = true;
+               state.notification.message = action.payload.message;
+               state.notification.type = "error";
+            }
+         })
+         .addCase(updateProduct.pending, (state, action) => {
+            state.isLoading = true;
+            state.status = "pending";
+         })
+         .addCase(updateProduct.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.status = "idle";
+            // console.log(action.payload);
+            if (!isError(action.payload)) {
+               state.products = action.payload.data.products;
+               state.productEdit = action.payload.data.productEdit;
+
+               state.notification.isShow = true;
+               state.notification.message = "Chỉnh sửa thành công";
+               state.notification.type = "success";
+            } else {
+               state.notification.isShow = true;
+               state.notification.message = action.payload.message;
+               state.notification.type = "error";
+            }
+         })
+         .addCase(deleteProduct.pending, (state, action) => {
+            state.isLoading = true;
+            state.status = "pending";
+         })
+         .addCase(deleteProduct.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.status = "idle";
+            // console.log(action.payload);
+            if (!isError(action.payload)) {
+               state.products = action.payload.data.products;
+               state.productEdit = action.payload.data.productEdit;
+
+               state.notification.isShow = true;
+               state.notification.message = "Thực hiện thành công!";
+               state.notification.type = "success";
             } else {
                state.notification.isShow = true;
                state.notification.message = action.payload.message;
@@ -134,6 +201,26 @@ const productsSlice = createSlice({
             // console.log(action.payload);
             if (!isError(action.payload)) {
                state.productSpecial = [...action.payload.data];
+            } else {
+               state.notification.isShow = true;
+               state.notification.message = action.payload.message;
+               state.notification.type = "error";
+            }
+         })
+         .addCase(createNewProduct.pending, (state, action) => {
+            state.isLoading = true;
+            state.status = "pending";
+         })
+         .addCase(createNewProduct.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.status = "idle";
+            // console.log(action.payload);
+            if (!isError(action.payload)) {
+               state.products = [...action.payload.data];
+               // console.log("true");
+               state.notification.isShow = true;
+               state.notification.message = "Thêm sản phẩm thành công!";
+               state.notification.type = "success";
             } else {
                state.notification.isShow = true;
                state.notification.message = action.payload.message;
@@ -186,6 +273,40 @@ const productsSlice = createSlice({
             // console.log(action.payload);
             if (!isError(action.payload)) {
                state.productInCart = action.payload.data.products;
+               // console.log("true");
+            } else {
+               state.notification.isShow = true;
+               state.notification.message = action.payload.message;
+               state.notification.type = "error";
+            }
+         })
+         .addCase(updateSpecialProduct.pending, (state, action) => {
+            state.isLoading = true;
+            state.status = "pending";
+         })
+         .addCase(updateSpecialProduct.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.status = "idle";
+            // console.log(action.payload);
+            if (!isError(action.payload)) {
+               state.products = [...action.payload.data];
+               // console.log("true");
+            } else {
+               state.notification.isShow = true;
+               state.notification.message = action.payload.message;
+               state.notification.type = "error";
+            }
+         })
+         .addCase(updateSliderProduct.pending, (state, action) => {
+            state.isLoading = true;
+            state.status = "pending";
+         })
+         .addCase(updateSliderProduct.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.status = "idle";
+            // console.log(action.payload);
+            if (!isError(action.payload)) {
+               state.products = [...action.payload.data];
                // console.log("true");
             } else {
                state.notification.isShow = true;

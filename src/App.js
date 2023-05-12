@@ -29,6 +29,8 @@ import { OrderList } from "./Container/orderList/OrderList";
 import { LoginAdmin } from "./Component/Login/LoginAdmin";
 import { UsersManagement } from "./Component/usersManagement/UsersManagement";
 import { OrderManagement } from "./Component/orderManagement/OrderManagement";
+import { ProductManagement } from "./Component/productsManagement/ProductManagement";
+import { Dashboard } from "./Component/dashboard/Dashboard";
 function App() {
    const isLoading = useSelector(loading);
    const notify = useSelector(notification);
@@ -98,6 +100,7 @@ function App() {
                   <Route path="loginAdmin" element={<LoginAdmin />} />
 
                   <Route path="admin" element={<Admin />}>
+                     <Route index element={<Dashboard />} />
                      <Route
                         path="news-management"
                         element={<NewsManagement />}
@@ -109,6 +112,11 @@ function App() {
                      <Route
                         path="orders-management"
                         element={<OrderManagement />}
+                     />
+
+                     <Route
+                        path="products-management"
+                        element={<ProductManagement />}
                      />
                   </Route>
                </Routes>
